@@ -1,4 +1,10 @@
-release-manager
+[![Build Status](https://api.travis-ci.org/alexec/release-manager.png)](https://travis-ci.org/alexec/release-manager)
+Release Manager
 ===============
 
-Release Manager
+A nascent application spiking a release management app. The goal is orientated around release management rather than execution, e.g.
+
+* Getting sign-off.
+* Audit trail of changes.
+* Tracking components released.
+* Planning.
