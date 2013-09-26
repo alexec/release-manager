@@ -16,9 +16,9 @@ public class Release {
 	private Integer id;
 	@Column(length = 64, nullable = false, unique = true)
 	private String name;
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@OrderBy
-	@JoinTable(name = "release_component", joinColumns = { @JoinColumn(name = "release_id") })
+	@JoinTable(name = "release_component", joinColumns = @JoinColumn(name = "release_id"), inverseJoinColumns = @JoinColumn(name = "component_id"))
 	private Set<Component> components = new HashSet<>();
 	@Column(nullable = false)
 	private Date created = new Date();

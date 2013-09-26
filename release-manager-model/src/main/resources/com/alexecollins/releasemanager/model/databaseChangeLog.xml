@@ -7,7 +7,7 @@
     <changeSet id="1" author="alex.e.c">
         <createTable tableName="component">
             <column name="id" type="int" autoIncrement="true">
-                <constraints nullable="false"/>
+                <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="name" type="varchar(64)">
                 <constraints nullable="false"/>
@@ -18,7 +18,7 @@
         </createTable>
         <createTable tableName="release">
             <column name="id" type="int" autoIncrement="true">
-                <constraints nullable="false"/>
+                <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="name" type="varchar(64)">
                 <constraints nullable="false"/>
@@ -29,7 +29,7 @@
         </createTable>
         <createTable tableName="plan">
             <column name="id" type="bigint" autoIncrement="true">
-                <constraints nullable="false"/>
+                <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="value" type="varchar(255)">
                 <constraints nullable="false"/>
@@ -49,6 +49,15 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+        <addUniqueConstraint tableName="release_component" columnNames="release_id,component_id"/>
+        <addForeignKeyConstraint baseTableName="release_component" baseColumnNames="release_id"
+                                 constraintName="fk_rel_comp_rel_id"
+                                 referencedTableName="release"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="release_component" baseColumnNames="component_id"
+                                 constraintName="fk_rel_comp_comp_id"
+                                 referencedTableName="component"
+                                 referencedColumnNames="id"/>
     </changeSet>
 
     <changeSet id="3" author="alex.e.c">
@@ -62,7 +71,7 @@
         </insert>
 
         <insert tableName="release_component">
-            <column name="release_id" valueNumeric="2"/>
+            <column name="release_id" valueNumeric="1"/>
             <column name="component_id" valueNumeric="1"/>
         </insert>
 

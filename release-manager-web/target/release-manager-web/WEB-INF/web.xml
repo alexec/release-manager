@@ -23,4 +23,20 @@
         <servlet-name>mvc-dispatcher</servlet-name>
         <url-pattern>*.html</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>default</servlet-name>
+        <servlet-class>org.mortbay.jetty.servlet.DefaultServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.js</url-pattern>
+        <url-pattern>*.eot</url-pattern>
+        <url-pattern>*.svg</url-pattern>
+        <url-pattern>*.ttf</url-pattern>
+        <url-pattern>*.woff</url-pattern>
+        <url-pattern>*.css</url-pattern>
+    </servlet-mapping>
+
 </web-app>

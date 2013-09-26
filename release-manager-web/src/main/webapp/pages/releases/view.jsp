@@ -10,26 +10,19 @@
 <body>
     <div class="container">
         <ul class="nav nav-pills">
-            <li class="active"><a href="${pageContext.request.contextPath}/releases/index.html">Releases</a></li>
+            <li><a href="${pageContext.request.contextPath}/releases/index.html">Releases</a></li>
             <li><a href="${pageContext.request.contextPath}/components/index.html">Components</a></li>
         </ul>
-        <h1>Releases</h1>
+        <h1>Release #${release.id} ${release.name}</h1>
         <table class="table">
+            <legent>Components</legend>
             <thead><tr><td>ID</td><td>Name</td></tr></thead>
             <tbody>
-                <c:forEach var="release" items="${releases}">
-                <tr>
-                    <td>
-                        <a href="${release.id}.html">${release.id}</a>
-                    </td>
-                    <td>
-                        <a href="${release.id}.html">${release.name}</a>
-                    </td>
-                </tr>
+                <c:forEach var="component" items="${components}">
+                <tr><td>${component.id}</td><td>${component.name}</td></tr>
                 </c:forEach>
             </tbody>
         </table>
-        <p>${fn:length(releases)} release(s) | <a href="create.html">Create</a></p>
-	</div>
+        <p>${fn:length(components)} component(s)</div>
 </body>
 </html>

@@ -7,7 +7,7 @@
         <Arg>
             <New class="com.mchange.v2.c3p0.ComboPooledDataSource">
                 <Set name="driverClass">org.apache.derby.jdbc.EmbeddedDriver</Set>
-                <Set name="jdbcUrl">jdbc:derby:tutorialDB;create=true</Set>
+                <Set name="jdbcUrl">jdbc:derby:rmDB;create=true</Set>
                 <Set name="user"></Set>
                 <Set name="password"></Set>
             </New>
