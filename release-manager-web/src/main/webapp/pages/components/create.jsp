@@ -13,7 +13,7 @@
             <li><a href="${pageContext.request.contextPath}/releases/index.html">Releases</a></li>
             <li><a href="${pageContext.request.contextPath}/components/index.html">Components</a></li>
         </ul>
-        <h1>New Component</h1>
+        <h1>New Release</h1>
         <form role="form" method="post">
             <div class="form-group">
                 <label for="name">Name</label>

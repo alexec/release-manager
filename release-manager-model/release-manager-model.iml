@@ -23,6 +23,8 @@
     <orderEntry type="library" name="Maven: cglib:cglib:2.2" level="project" />
     <orderEntry type="library" name="Maven: asm:asm:3.1" level="project" />
     <orderEntry type="library" name="Maven: javassist:javassist:3.12.0.GA" level="project" />
+    <orderEntry type="library" name="Maven: org.liquibase:liquibase-core:3.0.0" level="project" />
+    <orderEntry type="library" name="Maven: org.yaml:snakeyaml:1.12" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.apache.tomcat:catalina:6.0.18" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.apache.tomcat:servlet-api:6.0.18" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.apache.tomcat:juli:6.0.18" level="project" />

@@ -4,23 +4,26 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.util.Date;
 
 /**
  * @author alexec (alex.e.c@gmail.com)
  */
 @Entity
-public class Component {
+public class Component implements Comparable<Component> {
 	@Id
 	@GeneratedValue
-	private Long id;
+	private Integer id;
 	@Column(length = 64)
 	private String name;
+	@Column(nullable = false)
+	private Date created = new Date();
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -30,5 +33,10 @@ public class Component {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@Override
+	public int compareTo(Component o) {
+		return name.compareTo(o.name);
 	}
 }

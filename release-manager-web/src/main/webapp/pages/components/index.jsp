@@ -11,16 +11,18 @@
     <div class="container">
         <ul class="nav nav-pills">
             <li><a href="${pageContext.request.contextPath}/releases/index.html">Releases</a></li>
-            <li><a href="${pageContext.request.contextPath}/components/index.html">Components</a></li>
+            <li class="active"><a href="${pageContext.request.contextPath}/components/index.html">Components</a></li>
         </ul>
-        <h1>New Component</h1>
-        <form role="form" method="post">
-            <div class="form-group">
-                <label for="name">Name</label>
-                <input type="test" class="form-control" name="name" placeholder="Enter name" focus="true">
-            </div>
-            <button type="submit" class="btn btn-default">Submit</button>
-        </form>
-    </div>
+        <h1>Components</h1>
+        <table class="table">
+            <thead><tr><td>ID</td><td>Name</td></tr></thead>
+            <tbody>
+                <c:forEach var="component" items="${components}">
+                <tr><td>${component.id}</td><td>${component.name}</td></tr>
+                </c:forEach>
+            </tbody>
+        </table>
+        <p>${fn:length(components)} component(s) | <a href="create.html">Create</a></p>
+	</div>
 </body>
 </html>

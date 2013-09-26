@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.util.Date;
 
 /**
  * @author alexec (alex.e.c@gmail.com)
@@ -15,6 +16,8 @@ public class Plan {
 	private Long id;
 	@Column(length = 64)
 	private String value;
+	@Column(nullable = false)
+	private Date created = new Date();
 
 	public Long getId() {
 		return id;

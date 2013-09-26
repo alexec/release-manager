@@ -10,7 +10,8 @@
 <body>
     <div class="container">
         <ul class="nav nav-pills">
-            <li><a href="${pageContext.request.contextPath}/releases/index.html">Releases</a></li>
+            <li class="active"><a href="${pageContext.request.contextPath}/releases/index.html">Releases</a></li>
+            <li><a href="${pageContext.request.contextPath}/components/index.html">Components</a></li>
         </ul>
         <h1>Releases</h1>
         <table class="table">
