@@ -9,6 +9,9 @@
 </head>
 <body>
     <div class="container">
+        <ul class="nav nav-pills">
+            <li><a href="${pageContext.request.contextPath}/releases/index.html">Releases</a></li>
+        </ul>
         <h1>Releases</h1>
         <table class="table">
             <thead><tr><td>ID</td><td>Name</td></tr></thead>
@@ -18,7 +21,7 @@
                 </c:forEach>
             </tbody>
         </table>
-        <p>${fn:length(releases)} release(s)</p>
+        <p>${fn:length(releases)} release(s) | <a href="create.html">Create</a></p>
 	</div>
 </body>
 </html>
