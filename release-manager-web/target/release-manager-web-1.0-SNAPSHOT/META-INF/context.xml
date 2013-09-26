@@ -1,3 +1,0 @@
-<Context>
-    <ResourceLink global="jdbc/rmDS" name="jdbc/rmDS" type="javax.sql.DataSource"/>
-</Context>
