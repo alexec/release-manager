@@ -1,6 +1,5 @@
 package com.alexecollins.releasemanager.model;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -14,9 +13,7 @@ public class Component implements Comparable<Component> {
 	@Id
 	@GeneratedValue
 	private Integer id;
-	@Column(length = 64)
 	private String name;
-	@Column(nullable = false)
 	private Date created = new Date();
 
 	public Integer getId() {

@@ -10,7 +10,7 @@
                 <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="name" type="varchar(64)">
-                <constraints nullable="false"/>
+                <constraints nullable="false" unique="true"/>
             </column>
             <column name="created" type="timestamp" defaultValueDate="current timestamp">
                 <constraints nullable="false"/>
@@ -21,7 +21,7 @@
                 <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="name" type="varchar(64)">
-                <constraints nullable="false"/>
+                <constraints nullable="false" unique="true"/>
             </column>
             <column name="created" type="timestamp" defaultValueDate="current timestamp">
                 <constraints nullable="false"/>
@@ -62,17 +62,15 @@
 
     <changeSet id="3" author="alex.e.c">
         <insert tableName="release">
-            <column name="id" valueNumeric="1"/>
             <column name="name" value="Example Release"/>
         </insert>
         <insert tableName="component">
-            <column name="id"  valueNumeric="1"/>
             <column name="name" value="Example Component"/>
         </insert>
 
         <insert tableName="release_component">
-            <column name="release_id" valueNumeric="1"/>
-            <column name="component_id" valueNumeric="1"/>
+            <column name="release_id" valueComputed="(select id from release)"/>
+            <column name="component_id" valueComputed="(select id from component)"/>
         </insert>
 
         <rollback>
