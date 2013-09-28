@@ -3,29 +3,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Releases</title>
+    <title>Components</title>
     <jsp:include page="/incl/css.jsp"/>
 </head>
 <body>
     <div class="container">
         <jsp:include page="/incl/nav.jsp"/>
-        <h1>Releases</h1>
+        <h1>Components</h1>
         <table class="table">
             <thead><tr><td>ID</td><td>Name</td></tr></thead>
             <tbody>
-                <c:forEach var="release" items="${releases}">
-                <tr>
-                    <td>
-                        <a href="${release.id}.html">${release.id}</a>
-                    </td>
-                    <td>
-                        <a href="${release.id}.html">${release.name}</a>
-                    </td>
-                </tr>
+                <c:forEach var="component" items="${components}">
+                <tr><td>${component.id}</td><td>${component.name}</td></tr>
                 </c:forEach>
             </tbody>
         </table>
-        <p>${fn:length(releases)} release(s) | <a href="create.html">Create</a></p>
+        <p>${fn:length(components)} component(s) | <a href="${pageContext.request.contextPath}/components/create.html">Create</a></p>
 	</div>
 </body>
 </html>

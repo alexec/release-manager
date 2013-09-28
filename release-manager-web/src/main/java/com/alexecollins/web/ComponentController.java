@@ -14,19 +14,18 @@ import javax.persistence.PersistenceContext;
  * @author alexec (alex.e.c@gmail.com)
  */
 @Controller
-@RequestMapping("/components")
 public class ComponentController {
 	@PersistenceContext
 	private EntityManager entityManager;
 
-	@RequestMapping("index")
+	@RequestMapping("/components")
 	public String index(Model model) {
 		model.addAttribute("components", entityManager.createQuery("select r from Component r order by r.name").getResultList());
 
-		return "components/index";
+		return "components";
 	}
 
-	@RequestMapping("create")
+	@RequestMapping("/components/create")
 	public String create() {
 		return "components/create";
 	}
@@ -38,6 +37,6 @@ public class ComponentController {
 		System.out.println(name);
 		item.setName(name);
 		entityManager.persist(item);
-		return "redirect:index.html";
+		return "redirect:/components.html";
 	}
 }

@@ -5,8 +5,8 @@
     Map nav = new HashMap();
     String cp = request.getContextPath();
     nav.put(cp + "/index.html", "Home");
-    nav.put(cp + "/releases/index.html", "Releases");
-    nav.put(cp + "/components/index.html", "Components");
+    nav.put(cp + "/releases.html", "Releases");
+    nav.put(cp + "/components.html", "Components");
     pageContext.setAttribute("nav", nav);
 %>
 <ul class="nav nav-pills">

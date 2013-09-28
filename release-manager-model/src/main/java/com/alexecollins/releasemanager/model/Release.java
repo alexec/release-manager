@@ -2,6 +2,7 @@ package com.alexecollins.releasemanager.model;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,11 +15,14 @@ public class Release {
 	@Id
 	@GeneratedValue
 	private Integer id;
+	@NotNull
 	private String name;
 	@ManyToMany(fetch = FetchType.EAGER)
 	@OrderBy
 	@JoinTable(name = "release_component", joinColumns = @JoinColumn(name = "release_id"), inverseJoinColumns = @JoinColumn(name = "component_id"))
+	@NotNull
 	private Set<Component> components = new HashSet<>();
+	@NotNull
 	private Date created = new Date();
 
 	public Integer getId() {
@@ -43,5 +47,22 @@ public class Release {
 
 	public Set<Component> getComponents() {
 		return components;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Release release = (Release) o;
+
+		if (!name.equals(release.name)) return false;
+
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		return name.hashCode();
 	}
 }

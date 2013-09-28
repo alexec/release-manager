@@ -11,12 +11,12 @@
         <jsp:include page="/incl/nav.jsp"/>
 
         <h1>New Component</h1>
-        <form role="form" method="post">
+        <form role="form" method="post" action="${pageContext.request.contextPath}/components.html">
             <div class="form-group">
                 <label for="name">Name</label>
                 <input type="test" class="form-control" name="name" placeholder="Enter name" focus="true">
             </div>
-            <button type="submit" class="btn btn-default">Submit</button>
+            <button type="submit" class="btn btn-default">Create</button>
         </form>
     </div>
 </body>
