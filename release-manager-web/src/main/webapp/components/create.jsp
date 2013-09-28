@@ -3,17 +3,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Release</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Component</title>
+    <jsp:include page="/incl/css.jsp"/>
 </head>
 <body>
     <div class="container">
-        <ul class="nav nav-pills">
-            <li><a href="${pageContext.request.contextPath}/releases/index.html">Releases</a></li>
-            <li><a href="${pageContext.request.contextPath}/components/index.html">Components</a></li>
-        </ul>
-        <h1>New Release</h1>
+        <jsp:include page="/incl/nav.jsp"/>
+
+        <h1>New Component</h1>
         <form role="form" method="post">
             <div class="form-group">
                 <label for="name">Name</label>

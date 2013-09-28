@@ -38,6 +38,6 @@ public class ComponentController {
 		System.out.println(name);
 		item.setName(name);
 		entityManager.persist(item);
-		return index(model);
+		return "redirect:index.html";
 	}
 }

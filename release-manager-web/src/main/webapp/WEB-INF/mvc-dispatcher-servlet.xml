@@ -11,7 +11,7 @@
     <import resource="classpath:com/alexecollins/releasemanager/model/applicationContext.xml"/>
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix"><value>/pages/</value></property>
+        <property name="prefix"><value>/</value></property>
         <property name="suffix"><value>.jsp</value></property>
     </bean>
 
@@ -27,6 +27,7 @@
         <property name="entityManagerFactory" ref="entityManagerFactory" />
     </bean>
 
+    <bean class="com.alexecollins.web.IndexController"/>
     <bean class="com.alexecollins.web.ReleaseController"/>
     <bean class="com.alexecollins.web.ComponentController"/>
 

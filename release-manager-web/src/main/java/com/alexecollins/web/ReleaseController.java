@@ -48,6 +48,6 @@ public class ReleaseController {
 		final Release release = new Release();
 		release.setName(name);
 		entityManager.persist(release);
-		return index(model);
+		return "redirect:index.html";
 	}
 }

@@ -5,6 +5,16 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
     <changeSet id="1" author="alex.e.c">
+        <createTable tableName="usr">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="email" type="varchar(64)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="2" author="alex.e.c">
         <createTable tableName="component">
             <column name="id" type="int" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
@@ -16,6 +26,8 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+    </changeSet>
+    <changeSet id="3" author="alex.e.c">
         <createTable tableName="release">
             <column name="id" type="int" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
@@ -24,6 +36,23 @@
                 <constraints nullable="false" unique="true"/>
             </column>
             <column name="created" type="timestamp" defaultValueDate="current timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="signOff">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="user_id" type="int">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="status" type="varchar(16)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created" type="timestamp" defaultValueDate="current timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified" type="timestamp" defaultValueDate="current timestamp">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -38,9 +67,6 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-    </changeSet>
-
-    <changeSet id="2" author="alex.e.c">
         <createTable tableName="release_component">
             <column name="release_id" type="int">
                 <constraints nullable="false"/>
@@ -60,7 +86,7 @@
                                  referencedColumnNames="id"/>
     </changeSet>
 
-    <changeSet id="3" author="alex.e.c">
+    <changeSet id="999" author="alex.e.c">
         <insert tableName="release">
             <column name="name" value="Example Release"/>
         </insert>
