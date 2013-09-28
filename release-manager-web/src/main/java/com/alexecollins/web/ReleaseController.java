@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -43,15 +44,15 @@ public class ReleaseController {
 		return "releases/edit";
 	}
 
-	@RequestMapping(value = "{id}", method = RequestMethod.POST)
+	@RequestMapping(value = "/releases/{id}", method = RequestMethod.POST)
 	@Transactional
-	public String edit(Model model, @PathVariable("id") int id, @PathVariable("component_id") int componentId) {
+	public String edit(Model model, @PathVariable("id") int id, @RequestParam("component_id") int componentId) {
 
 		final Release release = entityManager.find(Release.class, id);
 
 		release.addComponent(entityManager.find(Component.class, componentId));
 
-		entityManager.persist(release);
+		entityManager.merge(release);
 
 		return "redirect:/releases/" + id + ".html";
 	}

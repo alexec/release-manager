@@ -30,11 +30,10 @@ public class ComponentController {
 		return "components/create";
 	}
 
-	@RequestMapping(value = "create", method = RequestMethod.POST)
+	@RequestMapping(value = "/components", method = RequestMethod.POST)
 	@Transactional
 	public String components(Model model, String name) {
 		final Component item = new Component();
-		System.out.println(name);
 		item.setName(name);
 		entityManager.persist(item);
 		return "redirect:/components.html";
