@@ -2,6 +2,8 @@ package com.alexecollins.web;
 
 import com.alexecollins.releasemanager.model.Component;
 import com.alexecollins.releasemanager.model.Release;
+import com.alexecollins.releasemanager.model.SignOff;
+import com.alexecollins.releasemanager.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -38,21 +40,48 @@ public class ReleaseController {
 		model.addAttribute("included_components", new ArrayList<>(r.getComponents()));
 		final List<Component> components = new ArrayList<>(entityManager.createQuery("select c from Component c ", Component.class)
 				.getResultList());
+
 		components.removeAll(r.getComponents());
 		model.addAttribute("excluded_components", new ArrayList<>(components));
+
+		final ArrayList<SignOff> signOffs = new ArrayList<>(entityManager.createQuery("select u from SignOff u where u.release=:r", SignOff.class).setParameter("r", r).getResultList());
+		model.addAttribute("sign_offs", signOffs);
+
+		final ArrayList<User> users = new ArrayList<>(entityManager.createQuery("select u from User u", User.class).getResultList());
+		for (SignOff s : signOffs) {
+			users.remove(s.getUser());
+		}
+		model.addAttribute("excluded_users", users);
 
 		return "releases/edit";
 	}
 
-	@RequestMapping(value = "/releases/{id}", method = RequestMethod.POST)
+	@RequestMapping(value = "/releases/{id}/components", method = RequestMethod.POST)
 	@Transactional
-	public String edit(Model model, @PathVariable("id") int id, @RequestParam("component_id") int componentId) {
+	public String addComponent(@PathVariable("id") int id, @RequestParam("component_id") int componentId) {
 
 		final Release release = entityManager.find(Release.class, id);
 
 		release.addComponent(entityManager.find(Component.class, componentId));
 
 		entityManager.merge(release);
+
+		return "redirect:/releases/" + id + ".html";
+	}
+
+	@RequestMapping(value = "/releases/{id}/sign-offs", method = RequestMethod.POST)
+	@Transactional
+	public String addSignOff(@PathVariable("id") int id, @RequestParam("userId") int userId) {
+
+		final Release release = entityManager.find(Release.class, id);
+
+		final User user = entityManager.find(User.class, userId);
+
+		final SignOff signOff = new SignOff();
+		signOff.setRelease(release);
+		signOff.setUser(user);
+
+		entityManager.merge(signOff);
 
 		return "redirect:/releases/" + id + ".html";
 	}
@@ -63,10 +92,10 @@ public class ReleaseController {
 
 	@RequestMapping(value = "/releases", method = RequestMethod.POST)
 	@Transactional
-	public String releases(Model model, String name) {
+	public String releases(String name) {
 		final Release release = new Release();
 		release.setName(name);
 		entityManager.persist(release);
-		return "redirect:/releases.html";
+		return "redirect:/releases/" + release.getId() + ".html";
 	}
 }

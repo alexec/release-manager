@@ -8,6 +8,7 @@ import java.util.Date;
  * @author alexec (alex.e.c@gmail.com)
  */
 @Entity
+@Table(name = "sign_off")
 public class SignOff {
 	@Id
 	@GeneratedValue
@@ -15,8 +16,8 @@ public class SignOff {
 	@ManyToOne
 	@NotNull
 	private Release release;
-	@ManyToOne
 	@NotNull
+	@ManyToOne @JoinColumn(name = "usr_id")
 	private User user;
 	@Enumerated(EnumType.STRING)
 	@NotNull
@@ -29,6 +30,34 @@ public class SignOff {
 	@PreUpdate
 	public void updateModified() {
 		modified = new Date();
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public Release getRelease() {
+		return release;
+	}
+
+	public void setRelease(Release release) {
+		this.release = release;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public SignOffStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(SignOffStatus status) {
+		this.status = status;
 	}
 
 	@Override

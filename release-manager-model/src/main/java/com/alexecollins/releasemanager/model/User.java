@@ -3,18 +3,28 @@ package com.alexecollins.releasemanager.model;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 /**
  * @author alexec (alex.e.c@gmail.com)
  */
-@Entity(name = "usr")
+@Entity
+@Table(name = "usr")
 public class User {
 	@Id
 	@GeneratedValue
 	private Integer id;
 	@NotNull
 	private String email;
+
+	public Integer getId() {
+		return id;
+	}
+
+	public String getEmail() {
+		return email;
+	}
 
 	@Override
 	public boolean equals(Object o) {

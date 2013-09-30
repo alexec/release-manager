@@ -39,14 +39,17 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <createTable tableName="signOff">
+        <createTable tableName="sign_off">
             <column name="id" type="int" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="user_id" type="int">
-                <constraints nullable="false" unique="true"/>
+            <column name="release_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_sign_off_release" references="release(id)"/>
             </column>
-            <column name="status" type="varchar(16)">
+            <column name="usr_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_sign_off_usr" references="usr(id)"/>
+            </column>
+            <column name="status" type="varchar(16)" defaultValue="requested">
                 <constraints nullable="false"/>
             </column>
             <column name="created" type="timestamp" defaultValueDate="current timestamp">
@@ -69,21 +72,13 @@
         </createTable>
         <createTable tableName="release_component">
             <column name="release_id" type="int">
-                <constraints nullable="false"/>
+                <constraints nullable="false" foreignKeyName="fk_rc_release" references="release(id)"/>
             </column>
             <column name="component_id" type="int">
-                <constraints nullable="false"/>
+                <constraints nullable="false" foreignKeyName="fk_rc_component" references="component(id)"/>
             </column>
         </createTable>
         <addUniqueConstraint tableName="release_component" columnNames="release_id,component_id"/>
-        <addForeignKeyConstraint baseTableName="release_component" baseColumnNames="release_id"
-                                 constraintName="fk_rel_comp_rel_id"
-                                 referencedTableName="release"
-                                 referencedColumnNames="id"/>
-        <addForeignKeyConstraint baseTableName="release_component" baseColumnNames="component_id"
-                                 constraintName="fk_rel_comp_comp_id"
-                                 referencedTableName="component"
-                                 referencedColumnNames="id"/>
     </changeSet>
 
     <changeSet id="999" author="alex.e.c">
@@ -91,18 +86,32 @@
             <column name="name" value="Example Release"/>
         </insert>
         <insert tableName="component">
-            <column name="name" value="Example Component"/>
+            <column name="name" value="Example Component 1"/>
+        </insert>
+        <insert tableName="component">
+            <column name="name" value="Example Component 2"/>
         </insert>
 
         <insert tableName="release_component">
+            <column name="release_id" valueComputed="(select min(id) from release)"/>
+            <column name="component_id" valueComputed="(select min(id) from component)"/>
+        </insert>
+
+        <insert tableName="usr">
+            <column name="email">alex.e.c@gmail.com</column>
+        </insert>
+
+        <insert tableName="sign_off">
             <column name="release_id" valueComputed="(select id from release)"/>
-            <column name="component_id" valueComputed="(select id from component)"/>
+            <column name="usr_id" valueComputed="(select id from usr)"/>
+            <column name="status" value="REQUESTED"/>
         </insert>
 
         <rollback>
             <delete tableName="release_component"/>
             <delete tableName="release"/>
             <delete tableName="component"/>
+            <delete tableName="usr"/>
         </rollback>
     </changeSet>
 

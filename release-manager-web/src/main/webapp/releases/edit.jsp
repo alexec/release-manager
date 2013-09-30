@@ -21,7 +21,7 @@
             </tbody>
         </table>
         <p>${fn:length(included_components)} component(s)</p>
-        <form method="post" role="form" class="form-inline">
+        <form method="post" role="form" class="form-inline" action="${pageContext.request.contextPath}/releases/${release.id}/components.html">
             <div class="form-group">
                 <label class="sr-only" for="component_id">Component</label>
                 <select name="component_id" id="component_id" class="form-control">
@@ -38,5 +38,25 @@
             -->
             <button type="submit" class="btn btn-default">Add</button>
         </form>
-</body>
+        <table class="table">
+            <legent>Sign-off</legend>
+            <thead><th>ID</th><th>User</th><th>Status</th></tr></thead>
+            <tbody>
+                <c:forEach var="i" items="${sign_offs}">
+                <tr><td>${i.id}</td><td>${i.user.email}</td><td>${i.status}</td></tr>
+                </c:forEach>
+            </tbody>
+        </table>
+        <p>${fn:length(signoffs)} sign-off(s)</p>
+        <form method="post" role="form" class="form-inline" action="${pageContext.request.contextPath}/releases/${release.id}/sign-offs.html">
+            <div class="form-group">
+                <label class="sr-only" for="user_id">Component</label>
+                <select name="user_id" id="user_id" class="form-control">
+                    <c:forEach var="i" items="${excluded_users}">
+                    <option value="${i.id}">${i.email}</option>
+                    </c:forEach>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-default">Add</button>
+        </form></body>
 </html>
