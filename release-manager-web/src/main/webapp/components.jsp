@@ -14,7 +14,15 @@
             <thead><tr><td>ID</td><td>Name</td></tr></thead>
             <tbody>
                 <c:forEach var="component" items="${components}">
-                <tr><td>${component.id}</td><td>${component.name}</td></tr>
+                <tr>
+                    <td>${component.id}</td><td>${component.name}</td>
+                    <td>
+                        <form method="POST" action="${pageContext.request.contextPath}/components/${component.id}.html"
+                            role="form" class="form-inline">
+                            <button class="btn btn-default btn-sm">Remove</button>
+                        </form>
+                    </td>
+                </tr>
                 </c:forEach>
             </tbody>
         </table>

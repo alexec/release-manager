@@ -9,7 +9,7 @@
 <body>
     <div class="container">
         <jsp:include page="/incl/nav.jsp"/>
-        <h1>New Component</h1>
+        <h1>New Release</h1>
         <form role="form" method="post" action="${pageContext.request.contextPath}/releases.html">
             <div class="form-group">
                 <label for="name">Name</label>

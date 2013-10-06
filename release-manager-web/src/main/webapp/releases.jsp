@@ -11,7 +11,7 @@
         <jsp:include page="/incl/nav.jsp"/>
         <h1>Releases</h1>
         <table class="table">
-            <thead><tr><td>ID</td><td>Name</td></tr></thead>
+            <thead><tr><th>ID</th><th>Name</th><th></th></tr></thead>
             <tbody>
                 <c:forEach var="release" items="${releases}">
                 <tr>
@@ -20,6 +20,12 @@
                     </td>
                     <td>
                         <a href="${pageContext.request.contextPath}/releases/${release.id}.html">${release.name}</a>
+                    </td>
+                    <td>
+                        <form method="POST" action="${pageContext.request.contextPath}/releases/${release.id}.html"
+                            role="form" class="form-inline">
+                            <button class="btn btn-default btn-sm">Remove</button>
+                        </form>
                     </td>
                 </tr>
                 </c:forEach>

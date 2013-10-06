@@ -17,7 +17,7 @@ public class Release {
 	private Integer id;
 	@NotNull
 	private String name;
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@OrderBy
 	@JoinTable(name = "release_component", joinColumns = @JoinColumn(name = "release_id"), inverseJoinColumns = @JoinColumn(name = "component_id"))
 	@NotNull
@@ -45,8 +45,16 @@ public class Release {
 		return components.add(component);
 	}
 
+	public void removeComponent(Component component) {
+		components.remove(component);
+	}
+
 	public Set<Component> getComponents() {
 		return components;
+	}
+
+	public Date getCreated() {
+		return created;
 	}
 
 	@Override

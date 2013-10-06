@@ -4,6 +4,7 @@ import com.alexecollins.releasemanager.model.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -32,10 +33,17 @@ public class ComponentController {
 
 	@RequestMapping(value = "/components", method = RequestMethod.POST)
 	@Transactional
-	public String components(Model model, String name) {
+	public String components(String name) {
 		final Component item = new Component();
 		item.setName(name);
 		entityManager.persist(item);
+		return "redirect:/components.html";
+	}
+
+	@RequestMapping(value = "/components/{id}", method = RequestMethod.POST)
+	@Transactional
+	public String components(@PathVariable("id") int id) {
+		entityManager.remove(entityManager.find(Component.class, id));
 		return "redirect:/components.html";
 	}
 }

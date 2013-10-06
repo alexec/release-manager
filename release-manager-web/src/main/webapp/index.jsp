@@ -10,6 +10,9 @@
     <div class="container">
     <jsp:include page="/incl/nav.jsp"/>
         <h1>Home</h1>
+        <div class="well">
+            Welcome to Release Manager.
+        </div>
 	</div>
 </body>
 </html>

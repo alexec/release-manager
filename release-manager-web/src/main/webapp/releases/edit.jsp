@@ -12,15 +12,26 @@
 
         <h1>Release #${release.id} ${release.name}</h1>
         <table class="table">
-            <legent>Components</legend>
-            <thead><tr><td>ID</td><td>Name</td></tr></thead>
+            <caption>Components</caption>
+            <thead><tr><th>ID</th><th>Name</th><th></th></tr></thead>
             <tbody>
                 <c:forEach var="component" items="${included_components}">
-                <tr><td>${component.id}</td><td>${component.name}</td></tr>
+                <tr>
+                    <td>${component.id}</td><td>${component.name}</td>
+                    <td>
+                     <form method="post" role="form" class="form-inline"
+                            action="${pageContext.request.contextPath}/releases/${release.id}/components/${component.id}.html">
+                            <button type="submit" class="btn btn-default btn-sm" name="action" value="REMOVE">Remove</button>
+                        </form>
+                    </td>
+                </tr>
                 </c:forEach>
             </tbody>
         </table>
+        <!--
         <p>${fn:length(included_components)} component(s)</p>
+        -->
+        <c:if test="${fn:length(excluded_components) > 0}">
         <form method="post" role="form" class="form-inline" action="${pageContext.request.contextPath}/releases/${release.id}/components.html">
             <div class="form-group">
                 <label class="sr-only" for="component_id">Component</label>
@@ -38,16 +49,32 @@
             -->
             <button type="submit" class="btn btn-default">Add</button>
         </form>
+        </c:if>
         <table class="table">
-            <legent>Sign-off</legend>
-            <thead><th>ID</th><th>User</th><th>Status</th></tr></thead>
+            <caption>Sign-off</caption>
+            <thead><th>ID</th><th>User</th><th>Status</th><th></th></tr></thead>
             <tbody>
                 <c:forEach var="i" items="${sign_offs}">
-                <tr><td>${i.id}</td><td>${i.user.email}</td><td>${i.status}</td></tr>
+                <tr>
+                    <td>${i.id}</td><td>${i.user.email}</td><td>${i.status}</td>
+                    <td>
+                        <c:if test="${i.status == 'REQUESTED'}">
+                        <form method="post" role="form" class="form-inline"
+                            action="${pageContext.request.contextPath}/releases/${release.id}/sign-offs/${i.id}.html">
+                            <button type="submit" class="btn btn-primary btn-sm" name="status" value="AUTHORISED">Authorize</button>
+                            <button type="submit" class="btn btn-danger btn-sm" name="status" value="REJECTED">Reject</button>
+                            <button type="submit" class="btn btn-default btn-sm" name="action" value="REMOVE">Remove</button>
+                        </form>
+                        </c:if>
+                    </td>
+                </tr>
                 </c:forEach>
             </tbody>
         </table>
+        <!--
         <p>${fn:length(signoffs)} sign-off(s)</p>
+        -->
+        <c:if test="${fn:length(excluded_users) > 0}">
         <form method="post" role="form" class="form-inline" action="${pageContext.request.contextPath}/releases/${release.id}/sign-offs.html">
             <div class="form-group">
                 <label class="sr-only" for="user_id">Component</label>
@@ -58,5 +85,8 @@
                 </select>
             </div>
             <button type="submit" class="btn btn-default">Add</button>
-        </form></body>
+        </form>
+        </c:if>
+        <p class="help-block">${created}</p>
+    </body>
 </html>
