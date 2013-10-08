@@ -10,14 +10,14 @@
     <div class="container">
         <jsp:include page="/incl/nav.jsp"/>
 
-        <h1>Release #${release.id} ${release.name}</h1>
+        <h1>Release - ${release.name}</h1>
         <table class="table">
             <caption>Components</caption>
-            <thead><tr><th>ID</th><th>Name</th><th></th></tr></thead>
+            <thead><tr><th>Name</th><th></th></tr></thead>
             <tbody>
                 <c:forEach var="component" items="${included_components}">
                 <tr>
-                    <td>${component.id}</td><td>${component.name}</td>
+                    <td>${component.name}</td>
                     <td>
                      <form method="post" role="form" class="form-inline"
                             action="${pageContext.request.contextPath}/releases/${release.id}/components/${component.id}.html">
@@ -56,11 +56,11 @@
             <tbody>
                 <c:forEach var="i" items="${sign_offs}">
                 <tr>
-                    <td>${i.id}</td><td>${i.user.email}</td><td>${i.status}</td>
+                    <td>${i.id}</td><td>${i.key.email}</td><td>${i.value.status}</td>
                     <td>
-                        <c:if test="${i.status == 'REQUESTED'}">
+                        <c:if test="${i.value.status == 'REQUESTED'}">
                         <form method="post" role="form" class="form-inline"
-                            action="${pageContext.request.contextPath}/releases/${release.id}/sign-offs/${i.id}.html">
+                            action="${pageContext.request.contextPath}/releases/${release.id}/sign-offs/${i.key.id}.html">
                             <button type="submit" class="btn btn-primary btn-sm" name="status" value="AUTHORISED">Authorize</button>
                             <button type="submit" class="btn btn-danger btn-sm" name="status" value="REJECTED">Reject</button>
                             <button type="submit" class="btn btn-default btn-sm" name="action" value="REMOVE">Remove</button>
@@ -71,9 +71,6 @@
                 </c:forEach>
             </tbody>
         </table>
-        <!--
-        <p>${fn:length(signoffs)} sign-off(s)</p>
-        -->
         <c:if test="${fn:length(excluded_users) > 0}">
         <form method="post" role="form" class="form-inline" action="${pageContext.request.contextPath}/releases/${release.id}/sign-offs.html">
             <div class="form-group">

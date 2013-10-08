@@ -1,27 +1,28 @@
 package com.alexecollins.web;
 
 import com.alexecollins.releasemanager.model.Component;
+import com.alexecollins.releasemanager.model.ComponentRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @author alexec (alex.e.c@gmail.com)
  */
 @Controller
 public class ComponentController {
-	@PersistenceContext
-	private EntityManager entityManager;
+
+	@Autowired
+	ComponentRepository repo;
 
 	@RequestMapping("/components")
 	public String index(Model model) {
-		model.addAttribute("components", entityManager.createQuery("select r from Component r order by r.name").getResultList());
+		model.addAttribute("components", repo.findAll());
 
 		return "components";
 	}
@@ -33,17 +34,17 @@ public class ComponentController {
 
 	@RequestMapping(value = "/components", method = RequestMethod.POST)
 	@Transactional
-	public String components(String name) {
+	public String newComponent(@RequestParam("name") String name) {
 		final Component item = new Component();
 		item.setName(name);
-		entityManager.persist(item);
+		repo.save(item);
 		return "redirect:/components.html";
 	}
 
 	@RequestMapping(value = "/components/{id}", method = RequestMethod.POST)
 	@Transactional
-	public String components(@PathVariable("id") int id) {
-		entityManager.remove(entityManager.find(Component.class, id));
+	public String deleteComponent(@PathVariable("id") String id) {
+		repo.delete(id);
 		return "redirect:/components.html";
 	}
 }
