@@ -11,7 +11,7 @@ import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/com/alexecollins/releasemanager/model/applicationContext.xml")
-public class SpringTest {
+public class SpringIT {
 
 	@Autowired
 	ComponentRepository db;
