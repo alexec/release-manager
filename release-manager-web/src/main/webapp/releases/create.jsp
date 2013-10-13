@@ -15,6 +15,10 @@
                 <label for="name">Name</label>
                 <input type="test" class="form-control" name="name" placeholder="Enter name" focus="true">
             </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea type="test" class="form-control" name="desc" placeholder="Enter description"></textarea>
+            </div>
             <button type="submit" class="btn btn-default">Create</button>
         </form>
     </div>
