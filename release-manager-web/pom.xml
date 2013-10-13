@@ -29,6 +29,36 @@
                         <scanTarget>target/classes</scanTarget>
                     </scanTargets>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>start</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>stop</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>stop</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.12</version>
+                <executions>
+                    <execution>
+                        <id>default</id>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
@@ -63,6 +93,12 @@
             <groupId>org.pegdown</groupId>
             <artifactId>pegdown</artifactId>
             <version>1.4.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium.fluent</groupId>
+            <artifactId>fluent-selenium</artifactId>
+            <version>1.14.2</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
