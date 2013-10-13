@@ -28,25 +28,6 @@ public class ReleaseController {
 	@Autowired
 	UserRepository userRepository;
 
-	@PostConstruct
-	public void createExamples() {
-		if (userRepository.findAll().size() == 0 ) {
-			final User user = new User();
-			user.setEmail("alex.e.c@gmail.com");
-			userRepository.save(user);
-			final Component component1 = new Component();
-			component1.setName("Example Component 1");
-			componentRepository.save(component1);
-			final Component component2 = new Component();
-			component2.setName("Example Component 2");
-			componentRepository.save(component2);
-			final Release release = new Release();
-			release.setName("Example Release 1");
-			release.getComponents().add(component1);
-			releaseRepository.save(release);
-		}
-	}
-
 	@RequestMapping("/releases")
 	public String index(Model model) {
 		model.addAttribute("releases", releaseRepository.findAll());

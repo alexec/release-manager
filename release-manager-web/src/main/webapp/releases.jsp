@@ -11,13 +11,10 @@
         <jsp:include page="/incl/nav.jsp"/>
         <h1>Releases</h1>
         <table class="table">
-            <thead><tr><th>ID</th><th>Name</th><th></th></tr></thead>
+            <thead><tr><th>Name</th><th></th></tr></thead>
             <tbody>
                 <c:forEach var="release" items="${releases}">
                 <tr>
-                    <td>
-                        <a href="${pageContext.request.contextPath}/releases/${release.id}.html">${release.id}</a>
-                    </td>
                     <td>
                         <a href="${pageContext.request.contextPath}/releases/${release.id}.html">${release.name}</a>
                     </td>
