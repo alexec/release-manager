@@ -11,11 +11,11 @@
         <jsp:include page="/incl/nav.jsp"/>
         <h1>Components</h1>
         <table class="table">
-            <thead><tr><td>ID</td><td>Name</td></tr></thead>
+            <thead><tr><td>Name</td></tr></thead>
             <tbody>
                 <c:forEach var="component" items="${components}">
                 <tr>
-                    <td>${component.id}</td><td>${component.name}</td>
+                    <td>${component.name}</td>
                     <td>
                         <form method="POST" action="${pageContext.request.contextPath}/components/${component.id}.html"
                             role="form" class="form-inline">
