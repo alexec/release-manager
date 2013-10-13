@@ -1,6 +1,7 @@
 package com.alexecollins.web;
 
 import com.alexecollins.releasemanager.model.*;
+import org.pegdown.PegDownProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,10 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.annotation.PostConstruct;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author alexec (alex.e.c@gmail.com)
@@ -36,17 +38,26 @@ public class ReleaseController {
 	}
 
 	@RequestMapping("/releases/{id}")
-	public String edit(Model model, @PathVariable("id") String id) {
+	public String edit(Model model, @PathVariable("id") String id, boolean edit) {
 		final Release r = releaseRepository.findOne(id);
 
 		model.addAttribute("release", r);
+
+		final PegDownProcessor pegDownProcessor = new PegDownProcessor();
+		model.addAttribute("desc", pegDownProcessor.markdownToHtml(r.getDesc()));
+
 		model.addAttribute("included_components", new ArrayList<>(r.getComponents()));
 		final List<Component> components = new ArrayList<>(componentRepository.findAll());
 
 		components.removeAll(r.getComponents());
 		model.addAttribute("excluded_components", new ArrayList<>(components));
 
-		model.addAttribute("sign_offs", r.getSignOffs());
+		final Map<User, SignOff> signOffHashMap = new HashMap<>();
+		for (Map.Entry<String, SignOff> entry : r.getSignOffs().entrySet()) {
+			signOffHashMap.put(userRepository.findOne(entry.getKey()), entry.getValue());
+		}
+
+		model.addAttribute("sign_offs", signOffHashMap);
 
 		final List<User> users = userRepository.findAll();
 		users.removeAll(r.getSignOffs().keySet());
@@ -54,13 +65,21 @@ public class ReleaseController {
 
 		model.addAttribute("created", new SimpleDateFormat("dd MMM yy hh:MMaa").format(r.getCreated()));
 
-		return "releases/edit";
+		return "releases/" + (!edit ?"view":"edit");
 	}
 
 	@RequestMapping(value = "/releases/{id}", method = RequestMethod.POST)
-	public String delete(@PathVariable("id") String id) {
+	public String deleteUpdate(String id, String name, String desc, String status) {
 
-		releaseRepository.delete(id);
+		if (name == null) {
+			releaseRepository.delete(id);
+		} else {
+			final Release release = releaseRepository.findOne(id);
+			release.setName(name);
+			release.setDesc(desc);
+			release.setStatus(ReleaseStatus.valueOf(status));
+			releaseRepository.save(release);
+		}
 
 		return "redirect:/releases.html";
 	}
@@ -83,7 +102,7 @@ public class ReleaseController {
 
 		final Release release = releaseRepository.findOne(id);
 
-		release.getComponents().remove(releaseRepository.findOne(componentId));
+		release.getComponents().remove(componentRepository.findOne(componentId));
 
 		releaseRepository.save(release);
 
@@ -101,7 +120,7 @@ public class ReleaseController {
 		final Release release = releaseRepository.findOne(id);
 		final User user = userRepository.findOne(userId);
 
-		release.getSignOffs().put(user, new SignOff());
+		release.getSignOffs().put(user.getId(), new SignOff());
 
 		releaseRepository.save(release);
 
@@ -116,9 +135,9 @@ public class ReleaseController {
 
 		final Release release = releaseRepository.findOne(id);
 		if ("REMOVE".equals(action)) {
-			release.getSignOffs().remove(userRepository.findOne(userId));
+			release.getSignOffs().remove(userRepository.findOne(userId).getId());
 		} else {
-			release.getSignOffs().get(userRepository.findOne(userId)).setStatus(SignOffStatus.valueOf(status));
+			release.getSignOffs().get(userRepository.findOne(userId).getId()).setStatus(SignOffStatus.valueOf(status));
 		}
 
 		releaseRepository.save(release);
@@ -133,9 +152,10 @@ public class ReleaseController {
 
 	@RequestMapping(value = "/releases", method = RequestMethod.POST)
 	@Transactional
-	public String releases(String name) {
+	public String releases(String name,String desc) {
 		final Release release = new Release();
 		release.setName(name);
+		release.setDesc(desc);
 		releaseRepository.save(release);
 		return redirectToRelease(release.getId());
 	}

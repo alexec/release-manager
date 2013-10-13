@@ -10,24 +10,39 @@
     <div class="container">
         <jsp:include page="/incl/nav.jsp"/>
 
-        <h1>Release - ${release.name}</h1>
-        <table class="table">
-            <caption>Components</caption>
-            <thead><tr><th>Name</th><th></th></tr></thead>
-            <tbody>
+        <h1>Release</h1>
+        <form role="form" method="post" action="${pageContext.request.contextPath}/releases/${release.id}.html">
+            <input name="id" type="hidden" value="${release.id}"/>
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" name="name" focus="true" value="${release.name}">
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea type="text" class="form-control" name="desc">${release.desc}</textarea>
+                <span class="help-block">Markdown formatted</span>
+            </div>
+            <div class="form-group">
+                <label for="status">Status</label>
+                <select name="status" id="status" class="form-control">
+                    <option ${release.status == 'REQUESTED' ? 'selected' : ''}>REQUESTED</option>
+                    <option ${release.status == 'EXECUTED' ? 'selected' : ''}>EXECUTED</option>
+                    <option ${release.status == 'VERIFIED' ? 'selected' : ''}>VERIFIED</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-default">Update</button>
+        </form>
+            <h2>Components</h2>
+        <ul class="list-inline">
                 <c:forEach var="component" items="${included_components}">
-                <tr>
-                    <td>${component.name}</td>
-                    <td>
+                    <li>${component.name}
                      <form method="post" role="form" class="form-inline"
                             action="${pageContext.request.contextPath}/releases/${release.id}/components/${component.id}.html">
                             <button type="submit" class="btn btn-default btn-sm" name="action" value="REMOVE">Remove</button>
                         </form>
-                    </td>
-                </tr>
+                    </li>
                 </c:forEach>
-            </tbody>
-        </table>
+        </ul>
         <!--
         <p>${fn:length(included_components)} component(s)</p>
         -->
@@ -50,14 +65,11 @@
             <button type="submit" class="btn btn-default">Add</button>
         </form>
         </c:if>
-        <table class="table">
-            <caption>Sign-off</caption>
-            <thead><th>ID</th><th>User</th><th>Status</th><th></th></tr></thead>
-            <tbody>
+            <h2>Sign-offs</h2>
+        <ul class="list-inline">
                 <c:forEach var="i" items="${sign_offs}">
-                <tr>
-                    <td>${i.id}</td><td>${i.key.email}</td><td>${i.value.status}</td>
-                    <td>
+                    <li>${i.key.email} ${i.value.status}
+
                         <c:if test="${i.value.status == 'REQUESTED'}">
                         <form method="post" role="form" class="form-inline"
                             action="${pageContext.request.contextPath}/releases/${release.id}/sign-offs/${i.key.id}.html">
@@ -66,11 +78,9 @@
                             <button type="submit" class="btn btn-default btn-sm" name="action" value="REMOVE">Remove</button>
                         </form>
                         </c:if>
-                    </td>
-                </tr>
+                    </li>
                 </c:forEach>
-            </tbody>
-        </table>
+        </ul>
         <c:if test="${fn:length(excluded_users) > 0}">
         <form method="post" role="form" class="form-inline" action="${pageContext.request.contextPath}/releases/${release.id}/sign-offs.html">
             <div class="form-group">

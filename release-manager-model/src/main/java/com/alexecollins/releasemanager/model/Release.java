@@ -4,7 +4,6 @@ package com.alexecollins.releasemanager.model;
 import lombok.Data;
 import org.springframework.data.mongodb.core.index.Indexed;
 
-import javax.validation.constraints.Min;
 import java.util.*;
 
 /**
@@ -14,10 +13,11 @@ import java.util.*;
 public class Release {
 	private String id;
 	@Indexed(unique = true)
-	@Min(1)
 	private String name;
 	private String desc = "";
-	private Map<User,SignOff> signOffs = new HashMap<>();
+	/** user.id -> SignOff */
+	private Map<String,SignOff> signOffs = new HashMap<>();
 	private Set<Component> components = new HashSet<>();
 	private Date created = new Date();
+	private ReleaseStatus status = ReleaseStatus.REQUESTED;
 }
