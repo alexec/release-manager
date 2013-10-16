@@ -36,6 +36,9 @@
                         <goals>
                             <goal>run</goal>
                         </goals>
+                        <configuration>
+                            <daemon>true</daemon>
+                        </configuration>
                     </execution>
                     <execution>
                         <id>stop</id>
