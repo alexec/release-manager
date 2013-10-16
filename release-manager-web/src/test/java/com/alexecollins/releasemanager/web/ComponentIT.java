@@ -3,12 +3,13 @@ package com.alexecollins.releasemanager.web;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.safari.SafariDriver;
+import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.seleniumhq.selenium.fluent.FluentMatcher;
 import org.seleniumhq.selenium.fluent.FluentWebDriver;
+
+import static org.openqa.selenium.By.partialLinkText;
 
 /**
  * @author alexec (alex.e.c@gmail.com)
@@ -20,9 +21,8 @@ public class ComponentIT {
 
 	@Before
 	public void setUp() throws Exception {
-		driver = new SafariDriver();
+		driver = new HtmlUnitDriver();
 		driver.get("http://localhost:8080/release-manager-web");
-		Thread.sleep(1000);
 		fluent = new FluentWebDriver(driver);
 	}
 
@@ -36,19 +36,22 @@ public class ComponentIT {
 	public void createANewComponent() throws Exception {
 
 		fluent
-				.link(By.partialLinkText("Components")).click()
-		        .link(By.partialLinkText("Create")).click()
-				.h1().getText().shouldBe("New Component");
+				.link(partialLinkText("Components")).click();
 		fluent
-				.input(By.name("name")).sendKeys("Test Component")
-				.button().click()
+		        .link(partialLinkText("Create")).click();
+		fluent
+				.h1().getText().shouldBe("New Component");
+		final String name = "Test Component " + System.currentTimeMillis();
+		fluent
+				.input().sendKeys(name);
+		fluent
+				.button().click();
+		fluent
 				.tds().first(new FluentMatcher() {
 			@Override
 			public boolean matches(WebElement webElement) {
-				return webElement.getText().contains("Test Component");
+				return webElement.getText().contains(name);
 			}
 		});
-
-
 	}
 }
