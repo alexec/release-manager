@@ -34,9 +34,8 @@ public class ReleaseCalendarController {
 			if (release.getWhen() == null) continue;
 			final long when = release.getWhen().getTime();
 			final long duration = release.getDuration();
-			//log.info(when.getEnd()*1000 +">" +from +"&&" +when.getBegin() *1000+"<"+ to);
-			if (when * 1000 > from && when * 1000 < to)
-				events.add(new Event(release.getId(), release.getName(), request.getContextPath() + "/releases/" + release.getId() + ".html", when * 1000, (when + duration) * 1000));
+			if (when + duration > from && when  < to)
+				events.add(new Event(release.getId(), release.getName(), request.getContextPath() + "/releases/" + release.getId() + ".html", when, when + duration));
 		}
 
 		Collections.sort(events);

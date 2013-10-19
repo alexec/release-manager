@@ -1,6 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ page import="com.alexecollins.releasemanager.web.TimeSpan" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,14 +12,14 @@
 
         <h1>${release.name}</h1>
         <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-7">
         <p>${release.status}</p>
         </div>
         <div class="col-md-3">
-                 <p>${release.when}</p>
+                 <p>${when}</p>
          </div>
-        <div class="col-md-3">
-                 <p><%= TimeSpan.format(pageContext.getAttributes("release").duration)%></p>
+        <div class="col-md-1">
+                 <p>${duration}</p>
          </div>
          </div>
          <div>${desc}</div>

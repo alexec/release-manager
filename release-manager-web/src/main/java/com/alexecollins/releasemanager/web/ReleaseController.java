@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -40,6 +41,9 @@ public class ReleaseController {
 		final Release r = releaseRepository.findOne(id);
 
 		model.addAttribute("release", r);
+
+		model.addAttribute("when", newSimpleDateFormat().format(r.getWhen()));
+		model.addAttribute("duration", TimeSpan.format(r.getDuration()));
 
 		final PegDownProcessor pegDownProcessor = new PegDownProcessor();
 		model.addAttribute("desc", pegDownProcessor.markdownToHtml(r.getDesc()));
@@ -69,6 +73,10 @@ public class ReleaseController {
 		return "releases/" + (!edit ?"view":"edit");
 	}
 
+	private SimpleDateFormat newSimpleDateFormat() {
+		return new SimpleDateFormat("dd MMM yyyy hh:ss z");
+	}
+
 	@RequestMapping(value = "/releases/{id}", method = RequestMethod.POST)
 	public String post(String submit, @PathVariable("id") String id, String name, String when, String duration, String desc, String status) {
 
@@ -77,7 +85,11 @@ public class ReleaseController {
 				final Release release = releaseRepository.findOne(id);
 				release.setName(name);
 				release.setDesc(desc);
-				release.setWhen(Chronic.parse(when).getBeginCalendar().getTime());
+				try {
+					release.setWhen(newSimpleDateFormat().parse(when));
+				} catch (ParseException e) {
+					release.setWhen(Chronic.parse(when).getBeginCalendar().getTime());
+				}
 				release.setDuration(TimeSpan.parse(duration));
 				release.setStatus(ReleaseStatus.valueOf(status));
 				releaseRepository.save(release);

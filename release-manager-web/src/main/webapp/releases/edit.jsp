@@ -15,39 +15,38 @@
             <input name="id" type="hidden" value="${release.id}"/>
 
             <div class="row">
-            <div class="form-group col-md-4">
-                <label for="name">Name</label>
-                <input type="text" class="form-control" name="name" focus="true" value="${release.name}"/>
-            </div>
-            <div class="form-group col-md-2">
-                <label for="when">When</label>
-                <input type="text" class="form-control" name="when" value="${release.when}"/>
-                <span class="help-block">e.g "tomorrow"</span>
-            </div>
-            <div class="form-group col-md-2">
-                <label for="when">Duration</label>
-                <input type="text" class="form-control" name="duration" value="${release.duration}"/>
-                <span class="help-block">e.g  "2 hours", or "2h 3m</span>
-            </div>
-            <div class="form-group col-md-4">
-                <label for="status">Status</label>
-                <select name="status" id="status" class="form-control">
-                    <option ${release.status == 'REQUESTED' ? 'selected' : ''}>REQUESTED</option>
-                    <option ${release.status == 'EXECUTED' ? 'selected' : ''}>EXECUTED</option>
-                    <option ${release.status == 'VERIFIED' ? 'selected' : ''}>VERIFIED</option>
-                </select>
-            </div>
+                <div class="form-group col-md-4">
+                    <label for="name">Name</label>
+                    <input type="text" class="form-control" name="name" focus="true" value="${release.name}"/>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="when">When</label>
+                    <input type="text" class="form-control" name="when" value="${when}"/>
+                    <span class="help-block">e.g "tomorrow"</span>
+                </div>
+                <div class="form-group col-md-1">
+                    <label for="when">Duration</label>
+                    <input type="text" class="form-control" name="duration" value="${duration}"/>
+                    <span class="help-block">e.g  "2 hours", or "2h 3m</span>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="status">Status</label>
+                    <select name="status" id="status" class="form-control">
+                        <option ${release.status == 'REQUESTED' ? 'selected' : ''}>REQUESTED</option>
+                        <option ${release.status == 'EXECUTED' ? 'selected' : ''}>EXECUTED</option>
+                        <option ${release.status == 'VERIFIED' ? 'selected' : ''}>VERIFIED</option>
+                    </select>
+                </div>
             </div>
             <div class="row">
-            <div class="col-md-12">
-            <div class="form-group">
-                <label for="description">Description</label>
-                <textarea type="text" class="form-control" name="desc">${release.desc}</textarea>
-                <span class="help-block">Markdown formatted</span>
+                <div class="form-group col-md-12">
+                    <label for="description">Description</label>
+                    <textarea type="text" class="form-control" name="desc">${release.desc}</textarea>
+                    <span class="help-block">Markdown formatted</span>
+                </div>
             </div>
-            <button type="submit" class="btn btn-default" name="submit" value="Update">Update</button>
-            </div>
-            </div>
+            <button type="submit" class="btn btn-primary" name="submit" value="Update">Update</button>
+            <a href="${pageContext.request.contextPath}/releases/${release.id}.html" class="btn btn-default">View</a>
         </form>
          <div class="row">
          <div class="col-md-6">
