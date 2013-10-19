@@ -47,12 +47,17 @@ public class ReleaseIT extends AbstractIT {
 	@Test
 	public void givenANewReleaseWhenWeRemoveItThenWeAreOnTheReleasePage() throws Exception {
 		final String name = newGoodRelease();
+		fluent.link(linkText("Releases")).click();
 		fluent.trs().first(new FluentMatcher() {
 			@Override
 			public boolean matches(WebElement webElement) {
-				return webElement.getText().contains(name);
+				try {
+					return webElement.findElement(linkText(name)).isDisplayed();
+				} catch (Exception ignored) {
+					return false;
+				}
 			}
-		}).button().click();
+		}).input().click();
 		fluent.h1().getText().shouldBe("Releases");
 	}
 
