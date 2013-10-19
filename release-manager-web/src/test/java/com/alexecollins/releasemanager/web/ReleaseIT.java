@@ -2,8 +2,6 @@ package com.alexecollins.releasemanager.web;
 
 import com.alexecollins.web.ExamplesLoader;
 import org.junit.Test;
-import org.openqa.selenium.WebElement;
-import org.seleniumhq.selenium.fluent.FluentMatcher;
 
 import static org.openqa.selenium.By.linkText;
 import static org.openqa.selenium.By.name;
@@ -15,22 +13,34 @@ public class ReleaseIT extends AbstractIT {
 
 	@Test
 	public void createARelease() throws Exception {
-		verifyCreated(newRelease("tomorrow"));
+		newGoodRelease();
 	}
 
-	private void verifyCreated(final String name) {
-		fluent.link(linkText("Releases")).click();
-		fluent.tds().first(new FluentMatcher() {
-			@Override
-			public boolean matches(WebElement webElement) {
-				return webElement.getText().contains(name);
-			}
-		});
+	private String newGoodRelease() {
+		return verifyExists(newRelease("tomorrow"));
+	}
+
+	private String verifyExists(final String name) {
+		System.out.println(fluent.url());
+		System.out.println(fluent.h1().getText());
+		fluent.h1().getText().shouldBe(name);
+		return name;
 	}
 
 	@Test(expected = Exception.class)
 	public void givenABadDateWhenICreateAReleaseThenIGetAnError() throws Exception {
-		verifyCreated(newRelease("balls"));
+		verifyExists(newRelease("balls date"));
+	}
+
+	@Test
+	public void givenAnExistingReleaseWhenItIsUpdatedThereAreNoErrors() throws Exception {
+		final String name = newGoodRelease();
+		fluent.link(linkText("Releases")).click();
+		fluent.link(linkText(name)).click();
+		fluent.link(linkText("Edit")).click();
+		fluent.input(name("when")).clearField().sendKeys("wednesday");
+		fluent.button().click();
+		verifyExists(name);
 	}
 
 	private String newRelease(String when) {

@@ -26,10 +26,8 @@ public class Release {
 	private ReleaseStatus status = ReleaseStatus.REQUESTED;
 
 	public void setWhen(String when) {
-		if (when != null) {
-			if (Chronic.parse(when) == null) {
-				throw new IllegalArgumentException("invalid date " + when);
-			}
+		if (when != null && Chronic.parse(when) == null) {
+			throw new IllegalArgumentException("invalid date " + when);
 		}
 		this.when = when;
 	}

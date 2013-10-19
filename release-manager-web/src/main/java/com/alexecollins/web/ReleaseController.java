@@ -69,20 +69,23 @@ public class ReleaseController {
 	}
 
 	@RequestMapping(value = "/releases/{id}", method = RequestMethod.POST)
-	public String deleteUpdate(String id, String name, String when, String desc, String status) {
+	public String post(String submit, String id, String name, String when, String desc, String status) {
 
-		if (name == null) {
-			releaseRepository.delete(id);
-		} else {
-			final Release release = releaseRepository.findOne(id);
-			release.setName(name);
-			release.setDesc(desc);
-			release.setWhen(when);
-			release.setStatus(ReleaseStatus.valueOf(status));
-			releaseRepository.save(release);
+		switch (submit) {
+			case "Update":
+				final Release release = releaseRepository.findOne(id);
+				release.setName(name);
+				release.setDesc(desc);
+				release.setWhen(when);
+				release.setStatus(ReleaseStatus.valueOf(status));
+				releaseRepository.save(release);
+				return redirectToRelease(id);
+			case "Remove":
+				releaseRepository.delete(id);
+				return "redirect:/releases.html";
+			default:
+				throw new IllegalArgumentException("unknown submit " + submit);
 		}
-
-		return "redirect:/releases.html";
 	}
 
 	@RequestMapping(value = "/releases/{id}/components", method = RequestMethod.POST)
@@ -153,7 +156,7 @@ public class ReleaseController {
 
 	@RequestMapping(value = "/releases", method = RequestMethod.POST)
 	@Transactional
-	public String releases(String name, String when, String desc) {
+	public String releases(String submit, String name, String when, String desc) {
 		final Release release = new Release();
 		release.setName(name);
 		release.setWhen(when);

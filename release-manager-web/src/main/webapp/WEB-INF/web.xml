@@ -40,4 +40,9 @@
         <url-pattern>*.css</url-pattern>
     </servlet-mapping>
 
+    <error-page>
+        <error-code>500</error-code>
+        <location>/error.jsp</location>
+    </error-page>
+
 </web-app>

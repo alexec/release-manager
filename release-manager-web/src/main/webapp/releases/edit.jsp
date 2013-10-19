@@ -10,7 +10,7 @@
     <div class="container">
         <jsp:include page="/incl/nav.jsp"/>
 
-        <h1>Release</h1>
+        <h1>Edit Release</h1>
         <form role="form" method="post" action="${pageContext.request.contextPath}/releases/${release.id}.html">
             <input name="id" type="hidden" value="${release.id}"/>
             <div class="form-group">
@@ -35,7 +35,7 @@
                     <option ${release.status == 'VERIFIED' ? 'selected' : ''}>VERIFIED</option>
                 </select>
             </div>
-            <button type="submit" class="btn btn-default">Update</button>
+            <button type="submit" class="btn btn-default" name="submit" value="Update">Update</button>
         </form>
             <h2>Components</h2>
         <ul class="list-inline">
