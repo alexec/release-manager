@@ -1,6 +1,7 @@
-package com.alexecollins.web;
+package com.alexecollins.releasemanager.web;
 
 import com.alexecollins.releasemanager.model.*;
+import com.mdimension.jchronic.Chronic;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -43,13 +44,13 @@ public class ExamplesLoader {
 
 	private void v0() {
 		final User user = new User();
-		log.info("loading examples v0");
+		ExamplesLoader.log.info("loading examples v0");
 		user.setEmail("alex.e.c@gmail.com");
 		userRepository.save(user);
 	}
 
 	private Release v1() {
-		log.info("loading examples v1");
+		ExamplesLoader.log.info("loading examples v1");
 		final Component component1 = new Component();
 		component1.setName("Example Component 1");
 		componentRepository.save(component1);
@@ -59,23 +60,24 @@ public class ExamplesLoader {
 		final Release release = new Release();
 		release.setName("Example Release 1");
 		release.setDesc("Interesting Release\n---\n\nstuff\n\n\tcode example\n\n");
-		release.getComponents().add(component1);
+		release.getComponents().add(new ReleaseComponent(component1, "1.0.0"));
 		releaseRepository.save(release);
 		return release;
 	}
 
 	private void v2() {
-		log.info("loading examples v2");
+		ExamplesLoader.log.info("loading examples v2");
 		final Release release = releaseRepository.findAll().get(0);
 		release.getSignOffs().put(userRepository.findAll().get(0).getId(), new SignOff());
 		releaseRepository.save(release);
 	}
 
 	private void v3() {
-		log.info("loading examples v3");
+		ExamplesLoader.log.info("loading examples v3");
 		final Release release = releaseRepository.findByName("Example Release 1");
 
-		release.setWhen("tuesday");
+		release.setWhen(Chronic.parse("tuesday").getBeginCalendar().getTime());
+		release.setDuration(TimeSpan.parse("2 hours"));
 		releaseRepository.save(release);
 	}
 

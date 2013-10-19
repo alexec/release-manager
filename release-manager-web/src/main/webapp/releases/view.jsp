@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ page import="com.alexecollins.releasemanager.web.TimeSpan" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,22 +12,37 @@
         <jsp:include page="/incl/nav.jsp"/>
 
         <h1>${release.name}</h1>
+        <div class="row">
+        <div class="col-md-6">
         <p>${release.status}</p>
-        <p>${release.when}</p>
+        </div>
+        <div class="col-md-3">
+                 <p>${release.when}</p>
+         </div>
+        <div class="col-md-3">
+                 <p><%= TimeSpan.format(pageContext.getAttributes("release").duration)%></p>
+         </div>
+         </div>
          <div>${desc}</div>
+         <div class="row">
+         <div class="col-md-6">
             <h2>Components</h2>
-        <ul class="list-inline">
+        <ul>
                 <c:forEach var="component" items="${included_components}">
-                    <li>${component.name}</li>
+                    <li>${component.component.name} ${component.version}</li>
                 </c:forEach>
         </ul>
+        </div>
+        <div class="col-md-6">
             <h2>Sign-offs</h2>
-        <ul class="list-inline">
+        <ul>
                 <c:forEach var="i" items="${sign_offs}">
                     <li>${i.key.email} ${i.value.status}</li>
                 </c:forEach>
         </ul>
-        <p class="help-block">${created}
+        </div>
+        </div>
+        <p>
          <a href="${pageContext.request.contextPath}/releases/${release.id}.html?edit=true">Edit</a>
 </p>
     </body>

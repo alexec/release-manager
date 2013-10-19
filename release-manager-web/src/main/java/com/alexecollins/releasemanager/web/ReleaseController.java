@@ -1,6 +1,7 @@
-package com.alexecollins.web;
+package com.alexecollins.releasemanager.web;
 
 import com.alexecollins.releasemanager.model.*;
+import com.mdimension.jchronic.Chronic;
 import org.pegdown.PegDownProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -13,10 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author alexec (alex.e.c@gmail.com)
@@ -49,7 +47,10 @@ public class ReleaseController {
 		model.addAttribute("included_components", new ArrayList<>(r.getComponents()));
 		final List<Component> components = new ArrayList<>(componentRepository.findAll());
 
-		components.removeAll(r.getComponents());
+		for (ReleaseComponent releaseComponent : r.getComponents()) {
+			components.remove(releaseComponent.getComponent());
+		}
+
 		model.addAttribute("excluded_components", new ArrayList<>(components));
 
 		final Map<User, SignOff> signOffHashMap = new HashMap<>();
@@ -60,7 +61,7 @@ public class ReleaseController {
 		model.addAttribute("sign_offs", signOffHashMap);
 
 		final List<User> users = userRepository.findAll();
-		users.removeAll(r.getSignOffs().keySet());
+		users.removeAll(signOffHashMap.keySet());
 		model.addAttribute("excluded_users", users);
 
 		model.addAttribute("created", new SimpleDateFormat("dd MMM yy hh:MMaa").format(r.getCreated()));
@@ -69,17 +70,18 @@ public class ReleaseController {
 	}
 
 	@RequestMapping(value = "/releases/{id}", method = RequestMethod.POST)
-	public String post(String submit, @PathVariable("id") String id, String name, String when, String desc, String status) {
+	public String post(String submit, @PathVariable("id") String id, String name, String when, String duration, String desc, String status) {
 
 		switch (submit) {
 			case "Update":
 				final Release release = releaseRepository.findOne(id);
 				release.setName(name);
 				release.setDesc(desc);
-				release.setWhen(when);
+				release.setWhen(Chronic.parse(when).getBeginCalendar().getTime());
+				release.setDuration(TimeSpan.parse(duration));
 				release.setStatus(ReleaseStatus.valueOf(status));
 				releaseRepository.save(release);
-				return redirectToRelease(id);
+				return redirectToRelease(id, false);
 			case "Remove":
 				releaseRepository.delete(id);
 				return "redirect:/releases.html";
@@ -89,32 +91,38 @@ public class ReleaseController {
 	}
 
 	@RequestMapping(value = "/releases/{id}/components", method = RequestMethod.POST)
-	public String addComponent(@PathVariable("id") String id, @RequestParam("component_id") String componentId) {
+	public String addComponent(@PathVariable("id") String id, @RequestParam("component_id") String componentId, String version) {
 
 		final Release release = releaseRepository.findOne(id);
 
-		release.getComponents().add(componentRepository.findOne(componentId));
+		release.getComponents().add(new ReleaseComponent(componentRepository.findOne(componentId), version));
 
 		releaseRepository.save(release);
 
-		return redirectToRelease(id);
+		return redirectToRelease(id, true);
 	}
 
 	@RequestMapping(value = "/releases/{id}/components/{component_id}", method = RequestMethod.POST)
 	@Transactional
-	public String updateComponent(@PathVariable("id") String id, @PathVariable("component_id") String componentId) {
+	public String updateComponent(@PathVariable("id") String id, @PathVariable("component_id") String componentId, String version) {
 
 		final Release release = releaseRepository.findOne(id);
 
-		release.getComponents().remove(componentRepository.findOne(componentId));
+		final Iterator<ReleaseComponent> it = release.getComponents().iterator();
+		while (it.hasNext()) {
+			final ReleaseComponent next = it.next();
+			if (next.getComponent().getId().equals(componentId)) {
+				it.remove();
+			}
+		}
 
 		releaseRepository.save(release);
 
-		return redirectToRelease(id);
+		return redirectToRelease(id, true);
 	}
 
-	private String redirectToRelease(String id) {
-		return "redirect:/releases/" + id + ".html";
+	private String redirectToRelease(String id, boolean edit) {
+		return "redirect:/releases/" + id + ".html?edit=" + edit;
 	}
 
 	@RequestMapping(value = "/releases/{id}/sign-offs", method = RequestMethod.POST)
@@ -128,10 +136,10 @@ public class ReleaseController {
 
 		releaseRepository.save(release);
 
-		return redirectToRelease(id);
+		return redirectToRelease(id, true);
 	}
 
-	@RequestMapping(value = "/releases/{id}/sign-offs/{sign_off_id}", method = RequestMethod.POST)
+	@RequestMapping(value = "/releases/{id}/sign-offs/{user_id}", method = RequestMethod.POST)
 	@Transactional
 	public String updateSignOff(@PathVariable("id") String id, @PathVariable("user_id") String userId,
 	                            @RequestParam(value = "status", required = false) String status,
@@ -146,7 +154,7 @@ public class ReleaseController {
 
 		releaseRepository.save(release);
 
-		return redirectToRelease(id);
+		return redirectToRelease(id, true);
 	}
 
 	@RequestMapping("/releases/create")
@@ -156,12 +164,13 @@ public class ReleaseController {
 
 	@RequestMapping(value = "/releases", method = RequestMethod.POST)
 	@Transactional
-	public String releases(String submit, String name, String when, String desc) {
+	public String releases(String submit, String name, String desc, String when, String duration) {
 		final Release release = new Release();
 		release.setName(name);
-		release.setWhen(when);
+		release.setWhen(Chronic.parse(when).getBeginCalendar().getTime());
+		release.setDuration(TimeSpan.parse(duration));
 		release.setDesc(desc);
 		releaseRepository.save(release);
-		return redirectToRelease(release.getId());
+		return redirectToRelease(release.getId(), false);
 	}
 }

@@ -1,4 +1,4 @@
-package com.alexecollins.web;
+package com.alexecollins.releasemanager.web;
 
 import com.alexecollins.releasemanager.model.Component;
 import com.alexecollins.releasemanager.model.ComponentRepository;

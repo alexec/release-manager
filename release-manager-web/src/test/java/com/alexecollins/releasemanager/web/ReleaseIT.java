@@ -1,6 +1,5 @@
 package com.alexecollins.releasemanager.web;
 
-import com.alexecollins.web.ExamplesLoader;
 import org.junit.Test;
 import org.openqa.selenium.WebElement;
 import org.seleniumhq.selenium.fluent.FluentMatcher;
@@ -16,6 +15,19 @@ public class ReleaseIT extends AbstractIT {
 	@Test
 	public void createARelease() throws Exception {
 		newGoodRelease();
+	}
+
+	@Test
+	public void givenAGoodReleaseWhenWeAddAComponentWeDoNotGetAnError() throws Exception {
+		final String name = newGoodRelease();
+
+		fluent.link(linkText("Releases")).click();
+		fluent.link(linkText(name)).click();
+		fluent.link(linkText("Edit")).click();
+
+
+		fluent.h1().getText().shouldNotBe("Error");
+
 	}
 
 	private String newGoodRelease() {
@@ -67,6 +79,7 @@ public class ReleaseIT extends AbstractIT {
 		final String name = "Test Release " + System.currentTimeMillis();
 		fluent.input(name("name")).sendKeys(name);
 		fluent.input(name("when")).sendKeys(when);
+		fluent.input(name("duration")).sendKeys("2 hours");
 		fluent.textarea(name("desc")).sendKeys("Test Release Desc\n---\n" + ExamplesLoader.LIPSUM);
 		fluent.button().click();
 		return name;

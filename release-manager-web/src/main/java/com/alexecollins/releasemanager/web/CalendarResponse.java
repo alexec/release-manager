@@ -1,4 +1,4 @@
-package com.alexecollins.web;
+package com.alexecollins.releasemanager.web;
 
 import lombok.Data;
 

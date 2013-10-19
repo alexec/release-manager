@@ -1,10 +1,7 @@
 package com.alexecollins.releasemanager.model;
 
 
-import com.mdimension.jchronic.Chronic;
-import lombok.AccessLevel;
 import lombok.Data;
-import lombok.Setter;
 import org.springframework.data.mongodb.core.index.Indexed;
 
 import java.util.*;
@@ -20,24 +17,10 @@ public class Release {
 	private String desc = "";
 	/** user.id -> SignOff */
 	private Map<String,SignOff> signOffs = new HashMap<>();
-	private Set<Component> components = new HashSet<>();
+	private Set<ReleaseComponent> components = new HashSet<>();
 	private Date created = new Date();
 	/** Formatted date. */
-	private String when;
-	@Indexed
-	@Setter(AccessLevel.PRIVATE)
-	private Long begin;
+	private Date when;
+	private long duration;
 	private ReleaseStatus status = ReleaseStatus.REQUESTED;
-
-	public void setWhen(String when) {
-		if (when != null && Chronic.parse(when) == null) {
-			throw new IllegalArgumentException("invalid date " + when);
-		}
-		this.when = when;
-		if (when != null) {
-			begin = Chronic.parse(when).getBegin();
-		} else {
-			begin = null;
-		}
-	}
 }

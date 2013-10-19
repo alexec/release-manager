@@ -19,10 +19,10 @@
         <property name="suffix"><value>.jsp</value></property>
     </bean>
 
-    <bean class="com.alexecollins.web.ExamplesLoader"/>
-    <bean class="com.alexecollins.web.IndexController"/>
-    <bean class="com.alexecollins.web.ReleaseController"/>
-    <bean class="com.alexecollins.web.ComponentController"/>
-    <bean class="com.alexecollins.web.ReleaseCalendarController"/>
+    <bean class="com.alexecollins.releasemanager.web.ExamplesLoader"/>
+    <bean class="com.alexecollins.releasemanager.web.IndexController"/>
+    <bean class="com.alexecollins.releasemanager.web.ReleaseController"/>
+    <bean class="com.alexecollins.releasemanager.web.ComponentController"/>
+    <bean class="com.alexecollins.releasemanager.web.ReleaseCalendarController"/>
 
 </beans>

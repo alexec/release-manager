@@ -1,4 +1,4 @@
-package com.alexecollins.web;
+package com.alexecollins.releasemanager.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
