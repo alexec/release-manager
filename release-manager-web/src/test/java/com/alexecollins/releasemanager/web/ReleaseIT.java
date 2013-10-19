@@ -2,6 +2,8 @@ package com.alexecollins.releasemanager.web;
 
 import com.alexecollins.web.ExamplesLoader;
 import org.junit.Test;
+import org.openqa.selenium.WebElement;
+import org.seleniumhq.selenium.fluent.FluentMatcher;
 
 import static org.openqa.selenium.By.linkText;
 import static org.openqa.selenium.By.name;
@@ -21,8 +23,6 @@ public class ReleaseIT extends AbstractIT {
 	}
 
 	private String verifyExists(final String name) {
-		System.out.println(fluent.url());
-		System.out.println(fluent.h1().getText());
 		fluent.h1().getText().shouldBe(name);
 		return name;
 	}
@@ -41,6 +41,18 @@ public class ReleaseIT extends AbstractIT {
 		fluent.input(name("when")).clearField().sendKeys("wednesday");
 		fluent.button().click();
 		verifyExists(name);
+	}
+
+	@Test
+	public void givenANewReleaseWhenWeRemoveItThenWeAreOnTheReleasePage() throws Exception {
+		final String name = newGoodRelease();
+		fluent.trs().first(new FluentMatcher() {
+			@Override
+			public boolean matches(WebElement webElement) {
+				return webElement.getText().contains(name);
+			}
+		}).button().click();
+		fluent.h1().getText().shouldBe("Releases");
 	}
 
 	private String newRelease(String when) {

@@ -69,7 +69,7 @@ public class ReleaseController {
 	}
 
 	@RequestMapping(value = "/releases/{id}", method = RequestMethod.POST)
-	public String post(String submit, String id, String name, String when, String desc, String status) {
+	public String post(String submit, @PathVariable("id") String id, String name, String when, String desc, String status) {
 
 		switch (submit) {
 			case "Update":
