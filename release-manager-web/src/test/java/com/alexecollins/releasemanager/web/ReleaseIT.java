@@ -27,9 +27,10 @@ public class ReleaseIT extends AbstractIT {
 		return name;
 	}
 
-	@Test(expected = Exception.class)
+	@Test
 	public void givenABadDateWhenICreateAReleaseThenIGetAnError() throws Exception {
-		verifyExists(newRelease("balls date"));
+		newRelease("balls date");
+		fluent.h1().getText().shouldBe("Error");
 	}
 
 	@Test
