@@ -42,8 +42,8 @@ public class ExamplesLoader {
 
 
 	private void v0() {
-		log.info("loading examples v0");
 		final User user = new User();
+		log.info("loading examples v0");
 		user.setEmail("alex.e.c@gmail.com");
 		userRepository.save(user);
 	}
@@ -72,6 +72,7 @@ public class ExamplesLoader {
 	}
 
 	private void v3() {
+		log.info("loading examples v3");
 		final Release release = releaseRepository.findByName("Example Release 1");
 
 		release.setWhen("tuesday");

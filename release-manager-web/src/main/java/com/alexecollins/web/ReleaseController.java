@@ -3,6 +3,7 @@ package com.alexecollins.web;
 import com.alexecollins.releasemanager.model.*;
 import org.pegdown.PegDownProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -32,11 +33,10 @@ public class ReleaseController {
 
 	@RequestMapping("/releases")
 	public String index(Model model) {
-		model.addAttribute("releases", releaseRepository.findAll());
+		model.addAttribute("releases", releaseRepository.findAll(new Sort(new Sort.Order("begin"))));
 
 		return "releases";
 	}
-
 	@RequestMapping("/releases/{id}")
 	public String edit(Model model, @PathVariable("id") String id, boolean edit) {
 		final Release r = releaseRepository.findOne(id);

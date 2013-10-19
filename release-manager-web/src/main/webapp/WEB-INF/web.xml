@@ -14,6 +14,20 @@
     </listener>
 
     <servlet>
+        <servlet-name>default</servlet-name>
+        <servlet-class>org.mortbay.jetty.servlet.DefaultServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/css/*</url-pattern>
+        <url-pattern>/fonts/*</url-pattern>
+        <url-pattern>/img/*</url-pattern>
+        <url-pattern>/js/*</url-pattern>
+        <url-pattern>/tmpls/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>mvc-dispatcher</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
@@ -22,22 +36,8 @@
     <servlet-mapping>
         <servlet-name>mvc-dispatcher</servlet-name>
         <url-pattern>/</url-pattern>
-        <url-pattern>*.html</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>default</servlet-name>
-        <servlet-class>org.mortbay.jetty.servlet.DefaultServlet</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>default</servlet-name>
-        <url-pattern>*.js</url-pattern>
-        <url-pattern>*.eot</url-pattern>
-        <url-pattern>*.svg</url-pattern>
-        <url-pattern>*.ttf</url-pattern>
-        <url-pattern>*.woff</url-pattern>
-        <url-pattern>*.css</url-pattern>
+            <url-pattern>*.html</url-pattern>
+            <url-pattern>*.json</url-pattern>
     </servlet-mapping>
 
     <error-page>
