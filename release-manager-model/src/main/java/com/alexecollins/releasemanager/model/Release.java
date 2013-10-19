@@ -27,7 +27,9 @@ public class Release {
 
 	public void setWhen(String when) {
 		if (when != null) {
-			Chronic.parse(when);
+			if (Chronic.parse(when) == null) {
+				throw new IllegalArgumentException("invalid date " + when);
+			}
 		}
 		this.when = when;
 	}
