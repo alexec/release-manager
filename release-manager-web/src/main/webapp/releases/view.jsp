@@ -12,6 +12,7 @@
 
         <h1>${release.name}</h1>
         <p>${release.status}</p>
+        <p>${release.when}</p>
          <div>${desc}</div>
             <h2>Components</h2>
         <ul class="list-inline">

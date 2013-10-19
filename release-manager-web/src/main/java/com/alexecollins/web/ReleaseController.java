@@ -69,7 +69,7 @@ public class ReleaseController {
 	}
 
 	@RequestMapping(value = "/releases/{id}", method = RequestMethod.POST)
-	public String deleteUpdate(String id, String name, String desc, String status) {
+	public String deleteUpdate(String id, String name, String when, String desc, String status) {
 
 		if (name == null) {
 			releaseRepository.delete(id);
@@ -77,6 +77,7 @@ public class ReleaseController {
 			final Release release = releaseRepository.findOne(id);
 			release.setName(name);
 			release.setDesc(desc);
+			release.setWhen(when);
 			release.setStatus(ReleaseStatus.valueOf(status));
 			releaseRepository.save(release);
 		}
@@ -152,9 +153,10 @@ public class ReleaseController {
 
 	@RequestMapping(value = "/releases", method = RequestMethod.POST)
 	@Transactional
-	public String releases(String name,String desc) {
+	public String releases(String name, String when, String desc) {
 		final Release release = new Release();
 		release.setName(name);
+		release.setWhen(when);
 		release.setDesc(desc);
 		releaseRepository.save(release);
 		return redirectToRelease(release.getId());

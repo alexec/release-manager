@@ -11,6 +11,8 @@ import javax.annotation.PostConstruct;
  */
 @Slf4j
 public class ExamplesLoader {
+	public static String LIPSUM = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+
 	@Autowired
 	ReleaseRepository releaseRepository;
 	@Autowired
@@ -30,17 +32,20 @@ public class ExamplesLoader {
 				v1();
 			case 2:
 				v2();
+			case 3:
+				v3();
 
 		}
-		examples.setVersion(3);
+		examples.setVersion(4);
 		changeLogRepository.save(examples);
 	}
 
-	private void v2() {
-		log.info("loading examples v2");
-		final Release release = releaseRepository.findAll().get(0);
-		release.getSignOffs().put(userRepository.findAll().get(0).getId(), new SignOff());
-		releaseRepository.save(release);
+
+	private void v0() {
+		log.info("loading examples v0");
+		final User user = new User();
+		user.setEmail("alex.e.c@gmail.com");
+		userRepository.save(user);
 	}
 
 	private Release v1() {
@@ -59,17 +64,25 @@ public class ExamplesLoader {
 		return release;
 	}
 
-	private void v0() {
-		log.info("loading examples v0");
-		final User user = new User();
-		user.setEmail("alex.e.c@gmail.com");
-		userRepository.save(user);
+	private void v2() {
+		log.info("loading examples v2");
+		final Release release = releaseRepository.findAll().get(0);
+		release.getSignOffs().put(userRepository.findAll().get(0).getId(), new SignOff());
+		releaseRepository.save(release);
+	}
+
+	private void v3() {
+		final Release release = releaseRepository.findByName("Example Release 1");
+
+		release.setWhen("tuesday");
+		releaseRepository.save(release);
 	}
 
 	private ChangeLog getExamples() {
 		ChangeLog examples = changeLogRepository.findByName("examples");
 		if (examples == null) {
 			examples = new ChangeLog();
+			examples.setName("examples");
 		}
 		return examples;
 	}

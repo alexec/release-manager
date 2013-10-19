@@ -1,6 +1,7 @@
 package com.alexecollins.releasemanager.model;
 
 
+import com.mdimension.jchronic.Chronic;
 import lombok.Data;
 import org.springframework.data.mongodb.core.index.Indexed;
 
@@ -19,5 +20,15 @@ public class Release {
 	private Map<String,SignOff> signOffs = new HashMap<>();
 	private Set<Component> components = new HashSet<>();
 	private Date created = new Date();
+	/** Formatted date. */
+	@Indexed
+	private String when;
 	private ReleaseStatus status = ReleaseStatus.REQUESTED;
+
+	public void setWhen(String when) {
+		if (when != null) {
+			Chronic.parse(when);
+		}
+		this.when = when;
+	}
 }

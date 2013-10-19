@@ -15,7 +15,12 @@
             <input name="id" type="hidden" value="${release.id}"/>
             <div class="form-group">
                 <label for="name">Name</label>
-                <input type="text" class="form-control" name="name" focus="true" value="${release.name}">
+                <input type="text" class="form-control" name="name" focus="true" value="${release.name}"/>
+            </div>
+            <div class="form-group">
+                <label for="when">When</label>
+                <input type="text" class="form-control" name="when" value="${release.when}"/>
+                <span class="help-block">e.g  tomorrow</span>
             </div>
             <div class="form-group">
                 <label for="description">Description</label>

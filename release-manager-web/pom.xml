@@ -21,13 +21,15 @@
                 <artifactId>maven-jetty-plugin</artifactId>
                 <version>6.1.10</version>
                 <configuration>
-                    <scanIntervalSeconds>10</scanIntervalSeconds>
                     <stopKey>foo</stopKey>
                     <stopPort>9999</stopPort>
+                    <!--
+                    <scanIntervalSeconds>10</scanIntervalSeconds>
                     <scanTargets>
                         <scanTarget>../release-manager-model/target/classes</scanTarget>
                         <scanTarget>target/classes</scanTarget>
                     </scanTargets>
+                    -->
                 </configuration>
                 <executions>
                     <execution>

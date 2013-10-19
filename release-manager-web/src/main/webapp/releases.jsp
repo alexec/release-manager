@@ -11,7 +11,7 @@
         <jsp:include page="/incl/nav.jsp"/>
         <h1>Releases</h1>
         <table class="table">
-            <thead><tr><th>Name</th><td>Status</th><th></th></tr></thead>
+            <thead><tr><th>Name</th><td>Status</th><th>When</th><th></th></tr></thead>
             <tbody>
                 <c:forEach var="release" items="${releases}">
                 <tr>
@@ -20,6 +20,9 @@
                     </td>
                     <td>
                         ${release.status}
+                    </td>
+                    <td>
+                        ${release.when}
                     </td>
                     <td>
                         <a href="${pageContext.request.contextPath}/releases/${release.id}.html?edit=true">Edit<a>
