@@ -1,5 +1,6 @@
 package com.alexecollins.releasemanager.web;
 
+import cucumber.api.java.Before;
 import cucumber.api.java.en.But;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -20,6 +21,11 @@ public class SecurityStepdefs {
 	WebDriver driver;
 	@Autowired
 	FluentWebDriver fluent;
+
+	@Before
+	public void tearDown() throws Throwable {
+		logged_out();
+	}
 
 	@Given("^logged out$")
 	public void logged_out() throws Throwable {
