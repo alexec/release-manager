@@ -24,5 +24,6 @@
     <bean class="com.alexecollins.releasemanager.web.ReleaseController"/>
     <bean class="com.alexecollins.releasemanager.web.ComponentController"/>
     <bean class="com.alexecollins.releasemanager.web.ReleaseCalendarController"/>
+    <bean class="com.alexecollins.releasemanager.web.WatchController"/>
 
 </beans>

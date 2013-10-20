@@ -54,7 +54,16 @@
                 </c:forEach>
             </tbody>
         </table>
-        <p>${fn:length(releases)} release(s) | <a href="${pageContext.request.contextPath}/releases/create.html">Create</a></p>
+        <p>
+            ${fn:length(releases)} release(s)
+            </p>
+            <p>
+            <form role="form" class="form-inline" method="post" action="${pageContext.request.contextPath}/watches.html"
+             style="display:inline">
+                <input type="submit" class="btn btn-default btn-sm" name="submit" value="Watch"/>
+            </form>|
+            <a href="${pageContext.request.contextPath}/releases/create.html">Create</a>
+        </p>
 	</div>
         <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-1.10.2.min.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>

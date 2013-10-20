@@ -13,6 +13,7 @@ import javax.annotation.PostConstruct;
 @Slf4j
 public class ExamplesLoader {
 	public static String LIPSUM = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+	private final String email = "alex.e.c@gmail.com";
 
 	@Autowired
 	ReleaseRepository releaseRepository;
@@ -22,6 +23,8 @@ public class ExamplesLoader {
 	UserRepository userRepository;
 	@Autowired
 	ChangeLogRepository changeLogRepository;
+	@Autowired
+	WatchRepository watchRepository;
 
 	@PostConstruct
 	public void createExamples() {
@@ -35,9 +38,11 @@ public class ExamplesLoader {
 				v2();
 			case 3:
 				v3();
+			case 4:
+				v4();
 
 		}
-		examples.setVersion(4);
+		examples.setVersion(5);
 		changeLogRepository.save(examples);
 	}
 
@@ -45,7 +50,7 @@ public class ExamplesLoader {
 	private void v0() {
 		final User user = new User();
 		ExamplesLoader.log.info("loading examples v0");
-		user.setEmail("alex.e.c@gmail.com");
+		user.setEmail(email);
 		userRepository.save(user);
 	}
 
@@ -79,6 +84,16 @@ public class ExamplesLoader {
 		release.setWhen(Chronic.parse("tuesday").getBeginCalendar().getTime());
 		release.setDuration(TimeSpan.parse("2 hours"));
 		releaseRepository.save(release);
+	}
+
+	private void v4() {
+		ExamplesLoader.log.info("loading examples v4");
+
+		final Watch watch = new Watch();
+		watch.setUserId(userRepository.findByEmail(email).getId());
+		watch.setSubject("releases");
+
+		watchRepository.save(watch);
 	}
 
 	private ChangeLog getExamples() {

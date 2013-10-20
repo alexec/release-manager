@@ -7,6 +7,7 @@
     nav.put(cp + "/index.html", "Home");
     nav.put(cp + "/releases.html", "Releases");
     nav.put(cp + "/components.html", "Components");
+    nav.put(cp + "/watches.html", "Watches");
     pageContext.setAttribute("nav", nav);
 %>
 <ul class="nav nav-pills">

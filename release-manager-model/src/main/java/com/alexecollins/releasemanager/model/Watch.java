@@ -8,6 +8,7 @@ import lombok.Data;
 @Data
 public class Watch {
 
+	private String id;
 	private String userId;
 	private String subject;
 }

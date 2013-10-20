@@ -1,0 +1,33 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Watches</title>
+    <jsp:include page="/incl/css.jsp"/>
+</head>
+<body>
+    <div class="container">
+        <jsp:include page="/incl/nav.jsp"/>
+        <h1>Watches</h1>
+        <table class="table">
+            <thead><tr><th>User</th><th>Subject</th></tr></thead>
+            <tbody>
+                <c:forEach var="watch" items="${watches}">
+                <tr>
+                    <td>${watch.user}</td>
+                    <td>${watch.subject}</td>
+                    <td>
+                        <form method="POST" action="${pageContext.request.contextPath}/watches/${watch.id}.html"
+                            role="form" class="form-inline">
+                            <button class="btn btn-default btn-sm">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+                </c:forEach>
+            </tbody>
+        </table>
+        <p>${fn:length(watches)} watches(s)</p>
+	</div>
+</body>
+</html>

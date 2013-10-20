@@ -32,8 +32,8 @@ public class ReleaseIT extends AbstractIT {
 
 	private void watchReleases() {
 		fluent.link(linkText("Releases")).click();
-		fluent.link(linkText("Watch")).click();
-		fluent.link(linkText("Unwatch"));
+		fluent.button(linkText("Watch")).click();
+		fluent.button(linkText("Unwatch"));
 	}
 
 	@Test
