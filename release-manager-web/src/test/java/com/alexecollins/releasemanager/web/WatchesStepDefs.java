@@ -27,7 +27,6 @@ public class WatchesStepDefs {
 	public void I_add_a_watch_to_releases() throws Throwable {
 		fluent.link(linkText("Releases")).click();
 		fluent.button(cssSelector("[value=Watch]")).click();
-		fluent.button(cssSelector("[value=Unwatch]"));
 	}
 
 	@Then("^I get an email$")

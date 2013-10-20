@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/calendar.css">
 <body>
-    <div class="container">
         <jsp:include page="/incl/nav.jsp"/>
+    <div class="container">
         <div class="page-header">
         <h1>Releases</h1>
         <div class="form-inline pull-right">

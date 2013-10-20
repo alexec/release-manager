@@ -7,8 +7,8 @@
     <jsp:include page="/incl/css.jsp"/>
 </head>
 <body>
-    <div class="container">
         <jsp:include page="/incl/nav.jsp"/>
+    <div class="container">
         <h1>Components</h1>
         <table class="table">
             <thead><tr><td>Name</td></tr></thead>

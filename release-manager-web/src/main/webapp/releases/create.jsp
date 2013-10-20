@@ -7,8 +7,8 @@
     <jsp:include page="/incl/css.jsp"/>
 </head>
 <body>
-    <div class="container">
         <jsp:include page="/incl/nav.jsp"/>
+    <div class="container">
         <h1>New Release</h1>
         <div class="row">
         <form role="form" method="post" action="${pageContext.request.contextPath}/releases.html">

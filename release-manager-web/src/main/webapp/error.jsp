@@ -7,8 +7,8 @@
     <jsp:include page="/incl/css.jsp"/>
 </head>
 <body>
-    <div class="container">
         <jsp:include page="/incl/nav.jsp"/>
+    <div class="container">
         <h1>Error</h1>
         <p>${pageContext.errorData.throwable}</p>
         </div>
