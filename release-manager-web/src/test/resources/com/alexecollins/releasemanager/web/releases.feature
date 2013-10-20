@@ -1,5 +1,8 @@
 Feature: releases
 
+  Background:
+    Given I login in as a user
+
   Scenario: new release
     Given the create releases page
     When I input a release for tomorrow
