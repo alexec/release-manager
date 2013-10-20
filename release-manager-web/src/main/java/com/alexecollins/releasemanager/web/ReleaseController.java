@@ -1,6 +1,7 @@
 package com.alexecollins.releasemanager.web;
 
 import com.alexecollins.releasemanager.model.*;
+import com.alexecollins.releasemanager.web.view.ReleaseComponentView;
 import com.mdimension.jchronic.Chronic;
 import org.pegdown.PegDownProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.mail.MessagingException;
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.security.Principal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -40,9 +38,10 @@ public class ReleaseController {
 	WatchService watchService;
 
 	@RequestMapping("/releases")
-	public String index(Model model) {
+	public String index(Model model, Principal principal) {
 		model.addAttribute("releases", releaseRepository.findAll(new Sort(new Sort.Order("begin"))));
 
+		model.addAttribute("watching", watchService.isWatchingPage(principal, "/releases.html"));
 		return "releases";
 	}
 	@RequestMapping("/releases/{id}")
@@ -57,11 +56,16 @@ public class ReleaseController {
 		final PegDownProcessor pegDownProcessor = new PegDownProcessor();
 		model.addAttribute("desc", pegDownProcessor.markdownToHtml(r.getDesc()));
 
-		model.addAttribute("included_components", new ArrayList<>(r.getComponents()));
+		final List<ReleaseComponentView> includedComponents = new ArrayList<>();
+		for (ReleaseComponent releaseComponent : r.getComponents()) {
+			includedComponents.add(new ReleaseComponentView(componentRepository.findOne(releaseComponent.getComponentId()), releaseComponent.getVersion()));
+		}
+
+		model.addAttribute("included_components", includedComponents);
 		final List<Component> components = new ArrayList<>(componentRepository.findAll());
 
-		for (ReleaseComponent releaseComponent : r.getComponents()) {
-			components.remove(componentRepository.findOne(releaseComponent.getComponentId()));
+		for (ReleaseComponentView releaseComponent : includedComponents) {
+			components.remove(releaseComponent.getComponent());
 		}
 
 		model.addAttribute("excluded_components", new ArrayList<>(components));
@@ -144,7 +148,11 @@ public class ReleaseController {
 	}
 
 	private String redirectToRelease(String id, boolean edit) {
-		return "redirect:/releases/" + id + ".html?edit=" + edit;
+		return "redirect:" + pageOf(id) + "?edit=" + edit;
+	}
+
+	private String pageOf(String id) {
+		return "/releases/" + id + ".html";
 	}
 
 	@RequestMapping(value = "/releases/{id}/sign-offs", method = RequestMethod.POST)
@@ -185,7 +193,7 @@ public class ReleaseController {
 
 	@RequestMapping(value = "/releases", method = RequestMethod.POST)
 	@Transactional
-	public String releases(String submit, String name, String desc, String when, String duration, HttpServletRequest request) throws IOException, MessagingException {
+	public String releases(String submit, String name, String desc, String when, String duration) {
 
 		final Release release = new Release();
 
@@ -196,8 +204,12 @@ public class ReleaseController {
 
 		releaseRepository.save(release);
 
-		watchService.notifyOfNewRelease(release, request.getContextPath() );
+		watchService.notifyOfCreation("/releases.html");
 
 		return redirectToRelease(release.getId(), false);
+	}
+
+	private String pageOf(Release release) {
+		return pageOf(release.getId());
 	}
 }

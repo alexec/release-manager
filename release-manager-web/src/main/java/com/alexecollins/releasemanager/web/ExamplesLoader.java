@@ -81,7 +81,7 @@ public class ExamplesLoader {
 
 		final Watch watch = new Watch();
 		watch.setUser("alex");
-		watch.setSubject("releases");
+		watch.setSubject("page:/releases.html");
 
 		watchRepository.save(watch);
 	}

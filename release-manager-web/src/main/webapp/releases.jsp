@@ -57,11 +57,9 @@
         <p>
             ${fn:length(releases)} release(s)
             </p>
+            <jsp:include page="/incl/watch.jsp"/>
             <p>
-            <form role="form" class="form-inline" method="post" action="${pageContext.request.contextPath}/watches.html"
-             style="display:inline">
-                <button type="submit" class="btn btn-default btn-sm" name="submit" value="Watch">Watch</button>
-            </form>|
+           |
             <a href="${pageContext.request.contextPath}/releases/create.html">Create</a>
         </p>
 	</div>

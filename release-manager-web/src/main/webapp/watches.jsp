@@ -18,9 +18,10 @@
                     <td>${watch.user}</td>
                     <td>${watch.subject}</td>
                     <td>
-                        <form method="POST" action="${pageContext.request.contextPath}/watches/${watch.id}.html"
+                        <form method="POST" action="${pageContext.request.contextPath}/watches.html"
                             role="form" class="form-inline">
-                            <button class="btn btn-default btn-sm">Remove</button>
+                            <input type="hidden" name="subject" value="${watch.subject}"/>
+                            <button name="submit" value="Unwatch" class="btn btn-default btn-sm">Unwatch</button>
                         </form>
                     </td>
                 </tr>

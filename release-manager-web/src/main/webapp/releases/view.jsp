@@ -28,7 +28,7 @@
             <h2>Components</h2>
         <ul>
                 <c:forEach var="component" items="${included_components}">
-                    <li>${component.component.name} ${component.version}</li>
+                    <li>${component.component.name}:${component.version}</li>
                 </c:forEach>
         </ul>
         </div>
@@ -36,7 +36,7 @@
             <h2>Sign-offs</h2>
         <ul>
                 <c:forEach var="i" items="${sign_offs}">
-                    <li>${i.key.email} ${i.value.status}</li>
+                    <li>${i.key}:${i.value.status}</li>
                 </c:forEach>
         </ul>
         </div>

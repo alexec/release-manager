@@ -3,7 +3,7 @@ Feature: watches
   Background:
     Given I login in as a user
 
-  Scenario: add a watch
+  Scenario: create a release
+    Given I add a watch to /releases.html
     When I create a new release
-    Given I add a watch to releases
     Then I get an email

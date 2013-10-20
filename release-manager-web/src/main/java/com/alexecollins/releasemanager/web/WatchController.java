@@ -6,10 +6,10 @@ import com.alexecollins.releasemanager.web.view.WatchView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.security.Principal;
 import java.util.ArrayList;
 
 /**
@@ -21,27 +21,31 @@ public class WatchController {
 	WatchRepository watchRepository;
 
 	@RequestMapping(value="/watches", method = RequestMethod.POST)
-	public String watches(String user, String subject) {
-		final Watch watch = new Watch();
-		watch.setUser(user);
-		watch.setSubject(subject);
-		watchRepository.save(watch);
-		return "redirect:watches.html";
+	public String watches(Principal user, String subject, String submit) {
+		final Watch existingWatch = watchRepository.findByUserAndSubject(user.getName(), subject);
+		switch (submit) {
+			case "Watch":
+				final Watch watch = existingWatch != null ? existingWatch : new Watch();
+				watch.setUser(user.getName());
+				watch.setSubject(subject);
+				watchRepository.save(watch);
+				break;
+			case "Unwatch":
+				watchRepository.delete(existingWatch);
+				break;
+			default:
+				throw new IllegalArgumentException("unknown submit " + submit);
+		}
+		return "redirect:" + (subject.startsWith("page:") ? subject.substring(5) : "watches.html");
 	}
 
 	@RequestMapping(value="/watches", method = RequestMethod.GET)
-	public String watches(Model model) {
+	public String watches(Model model, Principal principal) {
 		final ArrayList<WatchView> watchViews = new ArrayList<>();
-		for (Watch watch : watchRepository.findAll()) {
+		for (Watch watch : watchRepository.findByUser(principal.getName())) {
 			watchViews.add(new WatchView(watch.getId(), watch.getUser(), watch.getSubject()));
 		}
 		model.addAttribute("watches", watchViews);
-		return "watches";
-	}
-
-	@RequestMapping(value="/watches/{id}", method = RequestMethod.GET)
-	public String watch(@PathVariable("id") String id, String submit) {
-		watchRepository.delete(id);
 		return "watches";
 	}
 }

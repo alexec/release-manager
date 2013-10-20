@@ -37,9 +37,10 @@ public class SecurityStepdefs {
 
 	@When("^I login in as a (.+)$")
 	public void I_login_in_as_a(String role) throws Throwable {
-		fluent.input(By.name("j_username")).sendKeys(role);
-		fluent.input(By.name("j_password")).sendKeys("123456");
+		fluent.input(By.name("j_username")).clearField().sendKeys(role);
+		fluent.input(By.name("j_password")).clearField().sendKeys("123456");
 		fluent.input(By.name("submit")).click();
+		fluent.h1().getText().shouldNotBe("Error|Login|Access Denied");
 	}
 
 	@Then("^I can access (.+)$")

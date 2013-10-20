@@ -89,11 +89,11 @@
             <h2>Sign-offs</h2>
         <ul>
                 <c:forEach var="i" items="${sign_offs}">
-                    <li>${i.key.email} ${i.value.status}
+                    <li>${i.key} ${i.value.status}
 
                         <c:if test="${i.value.status == 'REQUESTED'}">
                         <form method="post" role="form" class="form-inline"
-                            action="${pageContext.request.contextPath}/releases/${release.id}/sign-offs/${i.key.id}.html">
+                            action="${pageContext.request.contextPath}/releases/${release.id}/sign-offs/${i.key}.html">
                             <button type="submit" class="btn btn-primary btn-sm" name="status" value="AUTHORISED">Authorize</button>
                             <button type="submit" class="btn btn-danger btn-sm" name="status" value="REJECTED">Reject</button>
                             <button type="submit" class="btn btn-default btn-sm" name="action" value="REMOVE">Remove</button>
