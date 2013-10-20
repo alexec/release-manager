@@ -12,6 +12,7 @@
 
     <import resource="classpath:com/alexecollins/releasemanager/model/applicationContext.xml"/>
     <import resource="classpath:com/alexecollins/releasemanager/web/applicationContext.xml"/>
+    <import resource="classpath:com/alexecollins/releasemanager/web/applicationContext-sec.xml"/>
 
     <mvc:annotation-driven />
 
@@ -26,5 +27,6 @@
     <bean class="com.alexecollins.releasemanager.web.ComponentController"/>
     <bean class="com.alexecollins.releasemanager.web.ReleaseCalendarController"/>
     <bean class="com.alexecollins.releasemanager.web.WatchController"/>
+    <bean class="com.alexecollins.releasemanager.web.AuthController"/>
 
 </beans>

@@ -12,6 +12,8 @@
 %>
 <ul class="nav nav-pills">
     <c:forEach items="${nav}" var="item">
-    <li class="${pageContext.request.uri.path == item.key ? 'active' : ''}"><a href="${item.key}">${item.value}</a></li>
+    <!-- TODO: fix this -->
+    <li class="${pageContext.request == item.key ? 'active' : ''}"><a href="${item.key}">${item.value}</a></li>
     </c:forEach>
+    <li><a href="<c:url value="/auth/logout.html"/>">Logout</a></li>
 </ul>
