@@ -5,6 +5,7 @@ import com.mdimension.jchronic.Chronic;
 import org.pegdown.PegDownProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -16,9 +17,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.security.Principal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author alexec (alex.e.c@gmail.com)
@@ -31,7 +35,7 @@ public class ReleaseController {
 	@Autowired
 	ComponentRepository componentRepository;
 	@Autowired
-	UserRepository userRepository;
+	SessionRegistry sessionRegistry;
 	@Autowired
 	WatchService watchService;
 
@@ -57,20 +61,21 @@ public class ReleaseController {
 		final List<Component> components = new ArrayList<>(componentRepository.findAll());
 
 		for (ReleaseComponent releaseComponent : r.getComponents()) {
-			components.remove(releaseComponent.getComponentId());
+			components.remove(componentRepository.findOne(releaseComponent.getComponentId()));
 		}
 
 		model.addAttribute("excluded_components", new ArrayList<>(components));
 
-		final Map<User, SignOff> signOffHashMap = new HashMap<>();
-		for (Map.Entry<String, SignOff> entry : r.getSignOffs().entrySet()) {
-			signOffHashMap.put(userRepository.findOne(entry.getKey()), entry.getValue());
+		model.addAttribute("sign_offs", r.getSignOffs());
+
+		final List<Object> users = new ArrayList<>(sessionRegistry.getAllPrincipals());
+		final Iterator<Object> it = users.iterator();
+		while (it.hasNext()) {
+			Principal principal = (Principal)it.next();
+			if (r.getSignOffs().keySet().contains(principal.getName())) {
+				it.remove();
+			}
 		}
-
-		model.addAttribute("sign_offs", signOffHashMap);
-
-		final List<User> users = userRepository.findAll();
-		users.removeAll(signOffHashMap.keySet());
 		model.addAttribute("excluded_users", users);
 
 		model.addAttribute("created", new SimpleDateFormat("dd MMM yy hh:MMaa").format(r.getCreated()));
@@ -144,29 +149,28 @@ public class ReleaseController {
 
 	@RequestMapping(value = "/releases/{id}/sign-offs", method = RequestMethod.POST)
 	@Transactional
-	public String addSignOff(@PathVariable("id") String id, @RequestParam("user_id") String userId) {
+	public String addSignOff(@PathVariable("id") String id, @RequestParam("user") String user) {
 
 		final Release release = releaseRepository.findOne(id);
-		final User user = userRepository.findOne(userId);
 
-		release.getSignOffs().put(user.getId(), new SignOff());
+		release.getSignOffs().put(user, new SignOff());
 
 		releaseRepository.save(release);
 
 		return redirectToRelease(id, true);
 	}
 
-	@RequestMapping(value = "/releases/{id}/sign-offs/{user_id}", method = RequestMethod.POST)
+	@RequestMapping(value = "/releases/{id}/sign-offs/{user}", method = RequestMethod.POST)
 	@Transactional
-	public String updateSignOff(@PathVariable("id") String id, @PathVariable("user_id") String userId,
+	public String updateSignOff(@PathVariable("id") String id, @PathVariable("user") String user,
 	                            @RequestParam(value = "status", required = false) String status,
 	                            @RequestParam(value = "action", required = false) String action) {
 
 		final Release release = releaseRepository.findOne(id);
 		if ("REMOVE".equals(action)) {
-			release.getSignOffs().remove(userRepository.findOne(userId).getId());
+			release.getSignOffs().remove(user);
 		} else {
-			release.getSignOffs().get(userRepository.findOne(userId).getId()).setStatus(SignOffStatus.valueOf(status));
+			release.getSignOffs().get(user).setStatus(SignOffStatus.valueOf(status));
 		}
 
 		releaseRepository.save(release);

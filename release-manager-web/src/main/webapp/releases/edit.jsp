@@ -105,10 +105,10 @@
         <c:if test="${fn:length(excluded_users) > 0}">
         <form method="post" role="form" class="form-inline" action="${pageContext.request.contextPath}/releases/${release.id}/sign-offs.html">
             <div class="form-group">
-                <label class="sr-only" for="user_id">Component</label>
-                <select name="user_id" id="user_id" class="form-control">
-                    <c:forEach var="i" items="${excluded_users}">
-                    <option value="${i.id}">${i.email}</option>
+                <label class="sr-only" for="user">Component</label>
+                <select name="user" id="user" class="form-control">
+                    <c:forEach var="user" items="${excluded_users}">
+                    <option value="${user}">${user}</option>
                     </c:forEach>
                 </select>
             </div>

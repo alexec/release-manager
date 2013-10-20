@@ -22,6 +22,10 @@
 
         <sec:logout logout-url="/auth/logout.html" logout-success-url="/auth/security.html"/>
 
+        <sec:session-management session-fixation-protection="migrateSession" session-authentication-error-url="/auth/login.html">
+            <sec:concurrency-control expired-url="/auth/login.html" session-registry-alias="sessionRegistry"/>
+        </sec:session-management>
+
     </sec:http>
 
     <sec:authentication-manager>

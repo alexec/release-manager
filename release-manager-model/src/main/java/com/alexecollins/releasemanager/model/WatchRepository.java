@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface WatchRepository extends MongoRepository<Watch,String> {
 
-	List<Watch> findByUserId(String userId);
+	List<Watch> findByUser(String user);
 
 	List<Watch> findBySubject(String subject);
 }

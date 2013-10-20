@@ -9,6 +9,6 @@ import lombok.Data;
 public class Watch {
 
 	private String id;
-	private String userId;
+	private String user;
 	private String subject;
 }

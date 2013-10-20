@@ -1,7 +1,6 @@
 package com.alexecollins.releasemanager.web;
 
 import com.alexecollins.releasemanager.model.Release;
-import com.alexecollins.releasemanager.model.UserRepository;
 import com.alexecollins.releasemanager.model.Watch;
 import com.alexecollins.releasemanager.model.WatchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +27,6 @@ public class WatchService {
 	JavaMailSender mailSender;
 	@Autowired
 	WatchRepository watchRepository;
-	@Autowired
-	UserRepository userRepository;
 
 	ExecutorService executorService = Executors.newSingleThreadExecutor();
 
@@ -42,7 +39,7 @@ public class WatchService {
 
 				final List<Watch> watches = watchRepository.findBySubject("releases");
 				for (Watch watch : watches) {
-					message.addRecipients(Message.RecipientType.TO, userRepository.findOne(watch.getUserId()).getEmail());
+					message.addRecipients(Message.RecipientType.TO, watch.getUser() + "@localhost");
 				}
 
 				message.setSubject("Release " + release.getName() + " created");

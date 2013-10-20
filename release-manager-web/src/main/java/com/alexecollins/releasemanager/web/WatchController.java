@@ -1,6 +1,5 @@
 package com.alexecollins.releasemanager.web;
 
-import com.alexecollins.releasemanager.model.UserRepository;
 import com.alexecollins.releasemanager.model.Watch;
 import com.alexecollins.releasemanager.model.WatchRepository;
 import com.alexecollins.releasemanager.web.view.WatchView;
@@ -20,13 +19,11 @@ import java.util.ArrayList;
 public class WatchController {
 	@Autowired
 	WatchRepository watchRepository;
-	@Autowired
-	UserRepository userRepository;
 
 	@RequestMapping(value="/watches", method = RequestMethod.POST)
-	public String watches(String userId, String subject) {
+	public String watches(String user, String subject) {
 		final Watch watch = new Watch();
-		watch.setUserId(userId);
+		watch.setUser(user);
 		watch.setSubject(subject);
 		watchRepository.save(watch);
 		return "redirect:watches.html";
@@ -36,7 +33,7 @@ public class WatchController {
 	public String watches(Model model) {
 		final ArrayList<WatchView> watchViews = new ArrayList<>();
 		for (Watch watch : watchRepository.findAll()) {
-			watchViews.add(new WatchView(watch.getId(), userRepository.findOne(watch.getUserId()).getEmail(), watch.getSubject()));
+			watchViews.add(new WatchView(watch.getId(), watch.getUser(), watch.getSubject()));
 		}
 		model.addAttribute("watches", watchViews);
 		return "watches";
