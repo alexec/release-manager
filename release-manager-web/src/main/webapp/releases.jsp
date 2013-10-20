@@ -60,7 +60,7 @@
             <p>
             <form role="form" class="form-inline" method="post" action="${pageContext.request.contextPath}/watches.html"
              style="display:inline">
-                <input type="submit" class="btn btn-default btn-sm" name="submit" value="Watch"/>
+                <button type="submit" class="btn btn-default btn-sm" name="submit" value="Watch">Watch</button>
             </form>|
             <a href="${pageContext.request.contextPath}/releases/create.html">Create</a>
         </p>

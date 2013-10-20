@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -29,6 +32,8 @@ public class ReleaseController {
 	ComponentRepository componentRepository;
 	@Autowired
 	UserRepository userRepository;
+	@Autowired
+	WatchService watchService;
 
 	@RequestMapping("/releases")
 	public String index(Model model) {
@@ -176,13 +181,19 @@ public class ReleaseController {
 
 	@RequestMapping(value = "/releases", method = RequestMethod.POST)
 	@Transactional
-	public String releases(String submit, String name, String desc, String when, String duration) {
+	public String releases(String submit, String name, String desc, String when, String duration, HttpServletRequest request) throws IOException, MessagingException {
+
 		final Release release = new Release();
+
 		release.setName(name);
 		release.setWhen(Chronic.parse(when).getBeginCalendar().getTime());
 		release.setDuration(TimeSpan.parse(duration));
 		release.setDesc(desc);
+
 		releaseRepository.save(release);
+
+		watchService.notifyOfNewRelease(release, request.getContextPath() );
+
 		return redirectToRelease(release.getId(), false);
 	}
 }

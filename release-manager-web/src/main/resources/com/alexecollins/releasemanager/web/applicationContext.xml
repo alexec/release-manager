@@ -18,4 +18,6 @@
         </property>
     </bean>
 
+    <bean class="com.alexecollins.releasemanager.web.WatchService"/>
+
 </beans>

@@ -11,6 +11,7 @@
     <context:annotation-config/>
 
     <import resource="classpath:com/alexecollins/releasemanager/model/applicationContext.xml"/>
+    <import resource="classpath:com/alexecollins/releasemanager/web/applicationContext.xml"/>
 
     <mvc:annotation-driven />
 

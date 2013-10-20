@@ -12,5 +12,6 @@
         <constructor-arg ref="webDriver"/>
     </bean>
     <bean class="com.alexecollins.testsupport.mail.FakeSmtpServer" init-method="start" destroy-method="close"/>
+    <bean class="com.alexecollins.releasemanager.web.Releases"/>
 
 </beans>

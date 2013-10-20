@@ -26,12 +26,13 @@ public class ReleasesStepDefs {
 	WebDriver driver;
 	@Autowired
 	FluentWebDriver fluent;
-	String name;
+	@Autowired
+	Releases releases;
 
 	@Before
 	public void setUp() throws Exception {
 		driver.get("http://localhost:8080/release-manager-web");
-		name = null;
+		releases.name = null;
 	}
 
 	@Given("^the create releases page$")
@@ -43,9 +44,9 @@ public class ReleasesStepDefs {
 	@When("^I input a release for (.*)$")
 	public void I_input_a_release_for(String when) throws Throwable {
 		
-		name = "Test Release " + System.currentTimeMillis();
+		releases.name = "Test Release " + System.currentTimeMillis();
 
-		fluent.input(name("name")).sendKeys(name);
+		fluent.input(name("name")).sendKeys(releases.name);
 		fluent.input(name("when")).sendKeys(when);
 
 		fluent.input(name("duration")).sendKeys("2 hours");
@@ -54,7 +55,7 @@ public class ReleasesStepDefs {
 
 	@And("^I see my release$")
 	public void I_see_my_release() throws Throwable {
-		fluent.h1().getText().shouldBe(name);
+		fluent.h1().getText().shouldBe(releases.name);
 	}
 
 	@Then("^I see an error$")
@@ -62,6 +63,10 @@ public class ReleasesStepDefs {
 		fluent.h1().getText().shouldBe("Error");
 	}
 
+	@When("^I create a new release$")
+	public void I_create_a_new_release() throws Throwable {
+		a_new_release();
+	}
 	@Given("^a new release$")
 	public void a_new_release() throws Throwable {
 		the_create_releases_page();
@@ -73,7 +78,7 @@ public class ReleasesStepDefs {
 	@When("^I open the edit release page$")
 	public void I_open_the_edit_release_page() throws Throwable {
 		I_open_the_releases_page();
-		fluent.link(linkText(name)).click();
+		fluent.link(linkText(releases.name)).click();
 		fluent.link(linkText("Edit")).click();
 	}
 
@@ -93,7 +98,7 @@ public class ReleasesStepDefs {
 			@Override
 			public boolean matches(WebElement webElement) {
 				try {
-					return webElement.findElement(linkText(name)).isDisplayed();
+					return webElement.findElement(linkText(releases.name)).isDisplayed();
 				} catch (Exception ignored) {
 					return false;
 				}
@@ -109,7 +114,7 @@ public class ReleasesStepDefs {
 	@And("^I do not see my release$")
 	public void I_do_not_see_my_release() throws Throwable {
 		try {
-			fluent.link(name(name));
+			fluent.link(name(releases.name));
 			fail();
 		} catch (FluentExecutionStopped ignored) {
 		}
