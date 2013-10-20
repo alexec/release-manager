@@ -60,7 +60,7 @@ public class ExamplesLoader {
 		final Release release = new Release();
 		release.setName("Example Release 1");
 		release.setDesc("Interesting Release\n---\n\nstuff\n\n\tcode example\n\n");
-		release.getComponents().add(new ReleaseComponent(component1, "1.0.0"));
+		release.getComponents().add(new ReleaseComponent(component1.getId(), "1.0.0"));
 		releaseRepository.save(release);
 		return release;
 	}

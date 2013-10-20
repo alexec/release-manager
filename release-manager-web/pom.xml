@@ -132,6 +132,12 @@
             <version>1.14.2</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.alexecollins</groupId>
+            <artifactId>test-support</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>

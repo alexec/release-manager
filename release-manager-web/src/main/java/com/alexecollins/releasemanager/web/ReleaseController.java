@@ -52,7 +52,7 @@ public class ReleaseController {
 		final List<Component> components = new ArrayList<>(componentRepository.findAll());
 
 		for (ReleaseComponent releaseComponent : r.getComponents()) {
-			components.remove(releaseComponent.getComponent());
+			components.remove(releaseComponent.getComponentId());
 		}
 
 		model.addAttribute("excluded_components", new ArrayList<>(components));
@@ -107,7 +107,7 @@ public class ReleaseController {
 
 		final Release release = releaseRepository.findOne(id);
 
-		release.getComponents().add(new ReleaseComponent(componentRepository.findOne(componentId), version));
+		release.getComponents().add(new ReleaseComponent(componentId, version));
 
 		releaseRepository.save(release);
 
@@ -123,7 +123,7 @@ public class ReleaseController {
 		final Iterator<ReleaseComponent> it = release.getComponents().iterator();
 		while (it.hasNext()) {
 			final ReleaseComponent next = it.next();
-			if (next.getComponent().getId().equals(componentId)) {
+			if (next.getComponentId().equals(componentId)) {
 				it.remove();
 			}
 		}

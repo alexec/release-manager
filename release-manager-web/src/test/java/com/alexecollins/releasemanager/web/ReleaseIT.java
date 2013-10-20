@@ -6,6 +6,7 @@ import org.seleniumhq.selenium.fluent.FluentMatcher;
 
 import static org.openqa.selenium.By.linkText;
 import static org.openqa.selenium.By.name;
+import static org.junit.Assert.*;
 
 /**
  * @author alexec (alex.e.c@gmail.com)
@@ -15,6 +16,24 @@ public class ReleaseIT extends AbstractIT {
 	@Test
 	public void createARelease() throws Exception {
 		newGoodRelease();
+	}
+
+	@Test
+	public void givenImWatchingReleasesAndANewReleaseIsCreatedThenIllGetAnEmail() throws Exception {
+
+		watchReleases();
+		final String name = newGoodRelease();
+		verifyNewReleaseEmail(name);
+	}
+
+	private void verifyNewReleaseEmail(String name) {
+		assertTrue(smtpServer.lastMessage().getText().contains(name));
+	}
+
+	private void watchReleases() {
+		fluent.link(linkText("Releases")).click();
+		fluent.link(linkText("Watch")).click();
+		fluent.link(linkText("Unwatch"));
 	}
 
 	@Test

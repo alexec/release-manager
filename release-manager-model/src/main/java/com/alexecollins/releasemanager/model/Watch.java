@@ -6,7 +6,8 @@ import lombok.Data;
  * @author alexec (alex.e.c@gmail.com)
  */
 @Data
-public class ReleaseComponent {
-	private final String componentId;
-	private final String version;
+public class Watch {
+
+	private String userId;
+	private String subject;
 }
