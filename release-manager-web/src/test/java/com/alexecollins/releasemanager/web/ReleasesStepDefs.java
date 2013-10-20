@@ -31,13 +31,12 @@ public class ReleasesStepDefs {
 
 	@Before
 	public void setUp() throws Exception {
-		driver.get("http://localhost:8080/release-manager-web");
 		releases.name = null;
 	}
 
 	@Given("^the create releases page$")
 	public void the_create_releases_page() throws Throwable {
-		fluent.link(linkText("Releases")).click();
+		driver.get("http://localhost:8080/release-manager-web/releases.html");
 		fluent.link(linkText("Create")).click();
 	}
 
@@ -89,7 +88,7 @@ public class ReleasesStepDefs {
 
 	@When("^I open the releases page$")
 	public void I_open_the_releases_page() throws Throwable {
-		fluent.link(linkText("Releases")).click();
+		driver.get("http://localhost:8080/release-manager-web/releases.html");
 	}
 
 	@And("^I click my release's remove button$")

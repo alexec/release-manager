@@ -28,13 +28,12 @@ public class ComponentsStepDefs {
 
 	@Before
 	public void before() {
-		driver.get("http://localhost:8080/release-manager-web");
 		name = null;
 	}
 
 	@Given("^the create component page$")
 	public void the_create_component_page() throws Throwable {
-		fluent.link(partialLinkText("Components")).click();
+		driver.get("http://localhost:8080/release-manager-web/components.html");
 		fluent.link(partialLinkText("Create")).click();
 	}
 
