@@ -56,23 +56,23 @@ public class ReleaseController {
 		final PegDownProcessor pegDownProcessor = new PegDownProcessor();
 		model.addAttribute("desc", pegDownProcessor.markdownToHtml(r.getDesc()));
 
-		final List<ReleaseComponentView> includedComponents = new ArrayList<>();
+		final List<ReleaseComponentView> includedComponents = new ArrayList<ReleaseComponentView>();
 		for (ReleaseComponent releaseComponent : r.getComponents()) {
 			includedComponents.add(new ReleaseComponentView(componentRepository.findOne(releaseComponent.getComponentId()), releaseComponent.getVersion()));
 		}
 
 		model.addAttribute("included_components", includedComponents);
-		final List<Component> components = new ArrayList<>(componentRepository.findAll());
+		final List<Component> components = new ArrayList<Component>(componentRepository.findAll());
 
 		for (ReleaseComponentView releaseComponent : includedComponents) {
 			components.remove(releaseComponent.getComponent());
 		}
 
-		model.addAttribute("excluded_components", new ArrayList<>(components));
+		model.addAttribute("excluded_components", new ArrayList<Component>(components));
 
 		model.addAttribute("sign_offs", r.getSignOffs());
 
-		final List<Object> users = new ArrayList<>(sessionRegistry.getAllPrincipals());
+		final List<Object> users = new ArrayList<Object>(sessionRegistry.getAllPrincipals());
 		final Iterator<Object> it = users.iterator();
 		while (it.hasNext()) {
 			Principal principal = (Principal)it.next();
@@ -94,8 +94,7 @@ public class ReleaseController {
 	@RequestMapping(value = "/releases/{id}", method = RequestMethod.POST)
 	public String post(String submit, @PathVariable("id") String id, String name, String when, String duration, String desc, String status) {
 
-		switch (submit) {
-			case "Update":
+		if ("Update".equals(submit)) {
 				final Release release = releaseRepository.findOne(id);
 				release.setName(name);
 				release.setDesc(desc);
@@ -108,10 +107,10 @@ public class ReleaseController {
 				release.setStatus(ReleaseStatus.valueOf(status));
 				releaseRepository.save(release);
 				return redirectToRelease(id, false);
-			case "Remove":
+        } else if ("Remove".equals(submit)) {
 				releaseRepository.delete(id);
 				return "redirect:/releases.html";
-			default:
+        } else {
 				throw new IllegalArgumentException("unknown submit " + submit);
 		}
 	}

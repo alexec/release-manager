@@ -16,8 +16,8 @@ public class Release {
 	private String name;
 	private String desc = "";
 	/** user.id -> SignOff */
-	private Map<String,SignOff> signOffs = new HashMap<>();
-	private Set<ReleaseComponent> components = new HashSet<>();
+	private Map<String,SignOff> signOffs = new HashMap<String,SignOff>();
+	private Set<ReleaseComponent> components = new HashSet<ReleaseComponent>();
 	private Date created = new Date();
 	/** Formatted date. */
 	private Date when;

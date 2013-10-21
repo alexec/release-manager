@@ -29,7 +29,7 @@ public class ReleaseCalendarController {
 	@ResponseBody
 	CalendarResponse calendar(long from, long to, HttpServletRequest request) {
 		ReleaseCalendarController.log.info("args={}..{}", from, to);
-		final List<Event> events = new ArrayList<>();
+		final List<Event> events = new ArrayList<Event>();
 		for (Release release : releaseRepository.findAll(new Sort(new Sort.Order("begin")))) {
 			if (release.getWhen() == null) continue;
 			final long when = release.getWhen().getTime();

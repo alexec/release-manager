@@ -23,25 +23,22 @@ public class WatchController {
 	@RequestMapping(value="/watches", method = RequestMethod.POST)
 	public String watches(Principal user, String subject, String submit) {
 		final Watch existingWatch = watchRepository.findByUserAndSubject(user.getName(), subject);
-		switch (submit) {
-			case "Watch":
+		if ("Watch".equals(subject)) {
 				final Watch watch = existingWatch != null ? existingWatch : new Watch();
 				watch.setUser(user.getName());
 				watch.setSubject(subject);
 				watchRepository.save(watch);
-				break;
-			case "Unwatch":
+        } else if ("Unwatch".equals(subject)) {
 				watchRepository.delete(existingWatch);
-				break;
-			default:
-				throw new IllegalArgumentException("unknown submit " + submit);
+        } else{
+            throw new IllegalArgumentException("unknown submit " + submit);
 		}
 		return "redirect:" + (subject.startsWith("page:") ? subject.substring(5) : "watches.html");
 	}
 
 	@RequestMapping(value="/watches", method = RequestMethod.GET)
 	public String watches(Model model, Principal principal) {
-		final ArrayList<WatchView> watchViews = new ArrayList<>();
+		final ArrayList<WatchView> watchViews = new ArrayList<WatchView>();
 		for (Watch watch : watchRepository.findByUser(principal.getName())) {
 			watchViews.add(new WatchView(watch.getId(), watch.getUser(), watch.getSubject()));
 		}
