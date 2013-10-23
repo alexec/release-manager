@@ -23,4 +23,5 @@ public class Release {
 	private Date when;
 	private long duration;
 	private ReleaseStatus status = ReleaseStatus.REQUESTED;
+    private Date executed;
 }

@@ -17,7 +17,10 @@
         </div>
         <div class="col-md-3">
                  <p>${when}</p>
-         </div>
+            <c:if test="${release.executed != null}">
+                <p>Executed at ${release.executed}</p>
+            </c:if>
+        </div>
         <div class="col-md-1">
                  <p>${duration}</p>
          </div>

@@ -14,25 +14,25 @@
         <form role="form" method="post" action="${pageContext.request.contextPath}/releases.html">
             <div class="form-group col-md-6">
                 <label for="name">Name</label>
-                <input type="text" class="form-control" name="name" placeholder="Enter name" focus="true"/>
+                <input type="text" class="form-control" name="name" placeholder="Enter name" focus="true" id="name"/>
             </div>
             <div class="form-group col-md-3">
                 <label for="when">When</label>
-                <input type="text" class="form-control" name="when" placeholder="Enter when"/>
+                <input type="text" class="form-control" name="when" placeholder="Enter when" id="when"/>
                 <span class="help-block">e.g "tomorrow"</span>
             </div>
             <div class="form-group col-md-3">
-                <label for="when">Duration</label>
-                <input type="text" class="form-control" name="duration" placeholder="Enter duration"/>
+                <label for="duration">Duration</label>
+                <input type="text" class="form-control" name="duration" placeholder="Enter duration" id="duration"/>
                 <span class="help-block">e.g  "2 hours", or "2h 3m</span>
             </div>
             </div>
             <div class="form-group">
                 <label for="description">Description</label>
-                <textarea type="text" class="form-control" name="desc" placeholder="Enter description" rows="12"></textarea>
+                <textarea type="text" class="form-control" name="desc" placeholder="Enter description" rows="12" id="description"></textarea>
                 <span class="help-block">Markdown formatted</span>
             </div>
-            <button type="submit" class="btn btn-default">Create</button>
+            <input type="submit" name="submit" class="btn btn-default" value="Create"/>
         </form>
     </div>
 </body>

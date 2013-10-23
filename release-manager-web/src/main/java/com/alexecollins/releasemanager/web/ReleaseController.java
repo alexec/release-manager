@@ -6,8 +6,6 @@ import com.mdimension.jchronic.Chronic;
 import org.pegdown.PegDownProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.session.SessionRegistry;
-import org.springframework.security.provisioning.GroupManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -20,6 +18,7 @@ import java.security.Principal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -57,6 +56,8 @@ public class ReleaseController {
 		final PegDownProcessor pegDownProcessor = new PegDownProcessor();
 		model.addAttribute("desc", pegDownProcessor.markdownToHtml(r.getDesc()));
 
+        model.addAttribute("executed", r.getExecuted() != null ? newSimpleDateFormat().format(r.getExecuted()) : null);
+
 		final List<ReleaseComponentView> includedComponents = new ArrayList<ReleaseComponentView>();
 		for (ReleaseComponent releaseComponent : r.getComponents()) {
 			includedComponents.add(new ReleaseComponentView(componentRepository.findOne(releaseComponent.getComponentId()), releaseComponent.getVersion()));
@@ -93,7 +94,7 @@ public class ReleaseController {
 	}
 
 	@RequestMapping(value = "/releases/{id}", method = RequestMethod.POST)
-	public String post(String submit, @PathVariable("id") String id, String name, String when, String duration, String desc, String status) {
+	public String edit(String submit, @PathVariable("id") String id, String name, String when, String duration, String desc, String status) {
 
 		if ("Update".equals(submit)) {
 				final Release release = releaseRepository.findOne(id);
@@ -105,8 +106,14 @@ public class ReleaseController {
 					release.setWhen(Chronic.parse(when).getBeginCalendar().getTime());
 				}
 				release.setDuration(TimeSpan.parse(duration));
-				release.setStatus(ReleaseStatus.valueOf(status));
-				releaseRepository.save(release);
+
+                final ReleaseStatus newStatus = ReleaseStatus.valueOf(status);
+                if (release.getStatus() == ReleaseStatus.REQUESTED && newStatus.equals(ReleaseStatus.EXECUTED)) {
+                    release.setExecuted(new Date());
+                }
+                release.setStatus(newStatus);
+
+                releaseRepository.save(release);
 				return redirectToRelease(id, false);
         } else if ("Remove".equals(submit)) {
 				releaseRepository.delete(id);
@@ -193,7 +200,7 @@ public class ReleaseController {
 
 	@RequestMapping(value = "/releases", method = RequestMethod.POST)
 	@Transactional
-	public String releases(String submit, String name, String desc, String when, String duration) {
+	public String create(String name, String desc, String when, String duration) {
 
 		final Release release = new Release();
 
@@ -209,7 +216,4 @@ public class ReleaseController {
 		return redirectToRelease(release.getId(), false);
 	}
 
-	private String pageOf(Release release) {
-		return pageOf(release.getId());
-	}
 }
