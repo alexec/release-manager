@@ -22,6 +22,8 @@ public class ExamplesLoader {
 	ChangeLogRepository changeLogRepository;
 	@Autowired
 	WatchRepository watchRepository;
+    @Autowired
+    ArtifactRepositoryRepository artifactRepositoryRepository;
 
 	@PostConstruct
 	public void createExamples() {
@@ -36,9 +38,11 @@ public class ExamplesLoader {
 				v3();
 			case 4:
 				v4();
+            case 5:
+                v5();
 
 		}
-		examples.setVersion(5);
+		examples.setVersion(6);
 		changeLogRepository.save(examples);
 	}
 
@@ -63,7 +67,7 @@ public class ExamplesLoader {
 	private void v2() {
 		ExamplesLoader.log.info("loading examples v2");
 		final Release release = releaseRepository.findAll().get(0);
-		release.getSignOffs().put("alex", new SignOff());
+		release.getSignOffs().put("user", new SignOff());
 		releaseRepository.save(release);
 	}
 
@@ -80,11 +84,33 @@ public class ExamplesLoader {
 		ExamplesLoader.log.info("loading examples v4");
 
 		final Watch watch = new Watch();
-		watch.setUser("alex");
+		watch.setUser("user");
 		watch.setSubject("page:/releases.html");
 
 		watchRepository.save(watch);
 	}
+
+    void v5() {
+        ExamplesLoader.log.info("loading examples v5");
+        final ArtifactRepository artifactRepository = new ArtifactRepository();
+        artifactRepository.setName("Maven 2");
+        artifactRepository.setType(ArtifactRepository.Type.MAVEN_2);
+        artifactRepository.setPath("http://repo.maven.apache.org/maven2");
+
+        artifactRepositoryRepository.save(artifactRepository);
+
+        final Component component = new Component();
+        component.setName("org.apache.maven:maven-core");
+        component.setArtifactRepository(artifactRepository);
+
+        componentRepository.save(component);
+
+        final Release release = releaseRepository.findByName("Example Release 1");
+        release.getComponents().add(new ReleaseComponent(component.getId(), "3.1.0"));
+
+        releaseRepository.save(release);
+
+    }
 
 	private ChangeLog getExamples() {
 		ChangeLog examples = changeLogRepository.findByName("examples");

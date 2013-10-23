@@ -14,7 +14,15 @@
         <form role="form" method="post" action="${pageContext.request.contextPath}/components.html">
             <div class="form-group">
                 <label for="name">Name</label>
-                <input type="text" class="form-control" name="name" placeholder="Enter name" focus="true"/>
+                <input type="text" class="form-control" name="name" placeholder="Enter name" focus="true" id="name"/>
+            </div>
+            <div class="form-group">
+                <label for="artifactRepository">Artifact Repository</label>
+                <select name="artifactRepository" id="artifactRepository" class="form-control">
+                    <c:forEach var="i" items="${artifactRepositories}">
+                        <option value="${i.id}" title="${i.path}">${i.name}</option>
+                    </c:forEach>
+                </select>
             </div>
             <button type="submit" class="btn btn-default" name="submit">Create</button>
         </form>

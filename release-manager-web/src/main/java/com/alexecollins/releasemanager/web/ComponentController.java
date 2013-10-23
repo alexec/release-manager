@@ -1,8 +1,10 @@
 package com.alexecollins.releasemanager.web;
 
+import com.alexecollins.releasemanager.model.ArtifactRepositoryRepository;
 import com.alexecollins.releasemanager.model.Component;
 import com.alexecollins.releasemanager.model.ComponentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -19,6 +21,8 @@ public class ComponentController {
 
 	@Autowired
 	ComponentRepository repo;
+    @Autowired
+    ArtifactRepositoryRepository artifactRepositoryRepository;
 
 	@RequestMapping("/components")
 	public String index(Model model) {
@@ -28,8 +32,9 @@ public class ComponentController {
 	}
 
 	@RequestMapping("/components/create")
-	public String create() {
-		return "components/create";
+	public String create(Model model) {
+        model.addAttribute("artifactRepositories", artifactRepositoryRepository.findAll(new Sort(new Sort.Order("name"))));
+        return "components/create";
 	}
 
 	@RequestMapping(value = "/components", method = RequestMethod.POST)

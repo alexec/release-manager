@@ -7,6 +7,7 @@ import org.pegdown.PegDownProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.provisioning.GroupManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -33,9 +34,9 @@ public class ReleaseController {
 	@Autowired
 	ComponentRepository componentRepository;
 	@Autowired
-	SessionRegistry sessionRegistry;
-	@Autowired
 	WatchService watchService;
+    @Autowired(required = false)
+    GroupManager groupManager;
 
 	@RequestMapping("/releases")
 	public String index(Model model, Principal principal) {
@@ -72,11 +73,11 @@ public class ReleaseController {
 
 		model.addAttribute("sign_offs", r.getSignOffs());
 
-		final List<Object> users = new ArrayList<Object>(sessionRegistry.getAllPrincipals());
-		final Iterator<Object> it = users.iterator();
+		final List<String> users = new ArrayList<String>(groupManager.findUsersInGroup("ROLE_APPROVER"));
+		final Iterator<String> it = users.iterator();
 		while (it.hasNext()) {
-			Principal principal = (Principal)it.next();
-			if (r.getSignOffs().keySet().contains(principal.getName())) {
+			String principal = it.next();
+			if (r.getSignOffs().keySet().contains(principal)) {
 				it.remove();
 			}
 		}

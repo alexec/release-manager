@@ -38,8 +38,8 @@ public class SecurityStepdefs {
 		driver.get("http://localhost:8080/release-manager-web/auth/logout.html");
 	}
 
-	@When("^I login in as a (.+)$")
-	public void I_login_in_as_a(String role) throws Throwable {
+	@When("^I login as a (.+)$")
+	public void I_login_as_a(String role) throws Throwable {
 		System.out.println("logging in");
 		fluent.h1().getText().shouldBe("Login");
 		fluent.input(By.name("j_username")).clearField().sendKeys(role);

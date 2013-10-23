@@ -14,4 +14,5 @@ public class Component  {
 	@Indexed(unique = true)
 	private String name;
 	private Date created = new Date();
+    private ArtifactRepository artifactRepository;
 }
