@@ -1,7 +1,7 @@
 Feature: watches
 
   Background:
-    Given I login in as a user
+    Given I login as a user
 
   Scenario: create a release
     Given I add a watch to /releases.html

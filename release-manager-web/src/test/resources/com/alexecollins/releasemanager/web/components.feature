@@ -1,7 +1,7 @@
 Feature: components
 
   Background:
-    Given I login in as a admin
+    Given I login as a admin
 
   Scenario: create new component
     Given the create component page

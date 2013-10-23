@@ -28,5 +28,6 @@
     <bean class="com.alexecollins.releasemanager.web.ReleaseCalendarController"/>
     <bean class="com.alexecollins.releasemanager.web.WatchController"/>
     <bean class="com.alexecollins.releasemanager.web.AuthController"/>
+    <bean class="com.alexecollins.releasemanager.web.ApproverController"/>
 
 </beans>

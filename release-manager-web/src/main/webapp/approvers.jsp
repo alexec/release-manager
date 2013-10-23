@@ -3,21 +3,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Components</title>
+    <title>Approvers</title>
     <jsp:include page="/incl/css.jsp"/>
 </head>
 <body>
         <jsp:include page="/incl/nav.jsp"/>
     <div class="container">
-        <h1>Components</h1>
+        <h1>Approvers</h1>
         <table class="table">
             <thead><tr><td>Name</td></tr></thead>
             <tbody>
-                <c:forEach var="component" items="${components}">
+                <c:forEach var="approver" items="${approvers}">
                 <tr>
-                    <td>${component.name}</td>
+                    <td>${approver.name}</td>
                     <td>
-                        <form method="POST" action="${pageContext.request.contextPath}/components/${component.id}.html"
+                        <form method="POST" action="${pageContext.request.contextPath}/approvers/${approver.id}.html"
                             role="form" class="form-inline">
                             <button class="btn btn-default btn-sm">Remove</button>
                         </form>
@@ -26,9 +26,9 @@
                 </c:forEach>
             </tbody>
         </table>
-        <p>${fn:length(components)} component(s)</p>
+        <p>${fn:length(approvers)} approver(s)</p>
             <p>
-                <a href="${pageContext.request.contextPath}/components/create.html">Create</a>
+                <a href="${pageContext.request.contextPath}/approvers/create.html">Create</a>
         </p>
 	</div>
 </body>

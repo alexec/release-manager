@@ -35,8 +35,8 @@ public class ReleaseController {
 	ComponentRepository componentRepository;
 	@Autowired
 	WatchService watchService;
-    @Autowired(required = false)
-    GroupManager groupManager;
+    @Autowired
+    ApproverRepository approverRepository;
 
 	@RequestMapping("/releases")
 	public String index(Model model, Principal principal) {
@@ -73,11 +73,11 @@ public class ReleaseController {
 
 		model.addAttribute("sign_offs", r.getSignOffs());
 
-		final List<String> users = new ArrayList<String>(groupManager.findUsersInGroup("ROLE_APPROVER"));
-		final Iterator<String> it = users.iterator();
+		final List<Approver> users = new ArrayList<Approver>(approverRepository.findAll());
+		final Iterator<Approver> it = users.iterator();
 		while (it.hasNext()) {
-			String principal = it.next();
-			if (r.getSignOffs().keySet().contains(principal)) {
+            Approver principal = it.next();
+			if (r.getSignOffs().keySet().contains(principal.getName())) {
 				it.remove();
 			}
 		}

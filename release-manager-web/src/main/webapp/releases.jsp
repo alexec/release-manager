@@ -30,7 +30,7 @@
         <div class="clearfix"></div>
         <div id="calendar"></div>
         <table class="table">
-            <thead><tr><th>Name</th><td>Status</th><th>When</th><th></th></tr></thead>
+            <thead><tr><th>Name</th><th>Status</th><th>When</th><th></th></tr></thead>
             <tbody>
                 <c:forEach var="release" items="${releases}">
                 <tr>
@@ -56,12 +56,10 @@
         </table>
         <p>
             ${fn:length(releases)} release(s)
-            </p>
-            <jsp:include page="/incl/watch.jsp"/>
-            <p>
-           |
-            <a href="${pageContext.request.contextPath}/releases/create.html">Create</a>
-        </p>
+                </p>
+<p>            <jsp:include page="/incl/watch.jsp"/></p>
+                <p>
+            <a href="${pageContext.request.contextPath}/releases/create.html" >Create</a></p>
 	</div>
         <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-1.10.2.min.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>

@@ -1,7 +1,7 @@
 Feature: releases
 
   Background:
-    Given I login in as a user
+    Given I login as a user
 
   Scenario: new release
     Given the create releases page
