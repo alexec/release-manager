@@ -41,7 +41,7 @@
             <div class="row">
                 <div class="form-group col-md-12">
                     <label for="description">Description</label>
-                    <textarea type="text" class="form-control" name="desc">${release.desc}</textarea>
+                    <textarea type="text" class="form-control" name="desc" rows="12">${release.desc}</textarea>
                     <span class="help-block">Markdown formatted</span>
                 </div>
             </div>

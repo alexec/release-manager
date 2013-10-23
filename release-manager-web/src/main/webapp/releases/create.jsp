@@ -29,7 +29,7 @@
             </div>
             <div class="form-group">
                 <label for="description">Description</label>
-                <textarea type="text" class="form-control" name="desc" placeholder="Enter description"></textarea>
+                <textarea type="text" class="form-control" name="desc" placeholder="Enter description" rows="12"></textarea>
                 <span class="help-block">Markdown formatted</span>
             </div>
             <button type="submit" class="btn btn-default">Create</button>

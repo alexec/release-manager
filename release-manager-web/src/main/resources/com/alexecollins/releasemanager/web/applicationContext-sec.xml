@@ -18,19 +18,23 @@
         <sec:intercept-url pattern="/components.html" access="hasRole('ROLE_ADMIN')" />
         <sec:intercept-url pattern="/**" access="hasRole('ROLE_USER')" />
 
-        <sec:form-login login-page="/auth/security.html" login-processing-url="/auth/login.html" default-target-url="/"/>
+        <sec:form-login login-page="/auth/security.html" login-processing-url="/auth/login.html" default-target-url="/"
+                authentication-failure-url="/auth/security.html?error=true"/>
 
         <sec:logout logout-url="/auth/logout.html" logout-success-url="/auth/security.html"/>
 
+        <sec:remember-me key="myAppKey"/>
+
         <sec:session-management session-fixation-protection="migrateSession" session-authentication-error-url="/auth/login.html">
-            <sec:concurrency-control expired-url="/auth/login.html" session-registry-alias="sessionRegistry"/>
+            <sec:concurrency-control expired-url="/auth/login.html" session-registry-alias="sessionRegistry" max-sessions="100"/>
         </sec:session-management>
 
     </sec:http>
 
+
     <sec:authentication-manager>
         <sec:authentication-provider>
-            <sec:user-service>
+            <sec:user-service id="userDetailsService">
                 <sec:user name="user" password="123456" authorities="ROLE_USER" />
                 <sec:user name="admin" password="123456" authorities="ROLE_USER,ROLE_ADMIN" />
             </sec:user-service>

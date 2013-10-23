@@ -23,12 +23,12 @@ public class WatchController {
 	@RequestMapping(value="/watches", method = RequestMethod.POST)
 	public String watches(Principal user, String subject, String submit) {
 		final Watch existingWatch = watchRepository.findByUserAndSubject(user.getName(), subject);
-		if ("Watch".equals(subject)) {
+		if ("Watch".equals(submit)) {
 				final Watch watch = existingWatch != null ? existingWatch : new Watch();
 				watch.setUser(user.getName());
 				watch.setSubject(subject);
 				watchRepository.save(watch);
-        } else if ("Unwatch".equals(subject)) {
+        } else if ("Unwatch".equals(submit)) {
 				watchRepository.delete(existingWatch);
         } else{
             throw new IllegalArgumentException("unknown submit " + submit);
