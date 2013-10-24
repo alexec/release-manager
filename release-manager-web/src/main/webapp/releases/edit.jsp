@@ -51,7 +51,7 @@
                 <span class="help-block">Markdown formatted</span>
             </div>
         </div>
-        <button type="submit" class="btn btn-primary" name="submit" value="Update">Update</button>
+        <input type="submit" class="btn btn-primary" name="submit" value="Update">
         <a href="${pageContext.request.contextPath}/releases/${release.id}.html" class="btn btn-default">View</a>
     </form>
     <div class="row">

@@ -4,6 +4,7 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.seleniumhq.selenium.fluent.FluentMatcher;
@@ -46,7 +47,7 @@ public class ComponentsStepDefs {
 
 	@And("^I click submit$")
 	public void I_click_submit() throws Throwable {
-		fluent.button().click();
+		fluent.input(By.name("submit")).click();
 	}
 
 	@Then("^I do not see an error$")

@@ -70,7 +70,7 @@ public class ReleasesStepDefs {
 	public void a_new_release() throws Throwable {
 		the_create_releases_page();
 		I_input_a_release_for("tomorrow");
-		fluent.button().click();
+		fluent.input(name("submit")).click();
 		I_see_my_release();
 	}
 

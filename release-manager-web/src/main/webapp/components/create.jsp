@@ -24,7 +24,7 @@
                     </c:forEach>
                 </select>
             </div>
-            <button type="submit" class="btn btn-default" name="submit">Create</button>
+            <input type="submit" class="btn btn-default" name="submit" value="Create"/>
         </form>
     </div>
 </body>

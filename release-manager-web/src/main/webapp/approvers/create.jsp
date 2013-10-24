@@ -16,7 +16,7 @@
                 <label for="name">Name</label>
                 <input type="text" class="form-control" name="name" placeholder="Enter name" focus="true" id="name"/>
             </div>
-            <button type="submit" class="btn btn-default" name="submit">Create</button>
+            <input type="submit" class="btn btn-default" name="submit" value="Create"/>
         </form>
     </div>
 </body>

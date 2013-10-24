@@ -21,7 +21,7 @@
                         <form method="POST" action="${pageContext.request.contextPath}/watches.html"
                             role="form" class="form-inline">
                             <input type="hidden" name="subject" value="${watch.subject}"/>
-                            <button name="submit" value="Unwatch" class="btn btn-default btn-sm">Unwatch</button>
+                            <input name="submit" value="Unwatch" class="btn btn-default btn-sm"/>
                         </form>
                     </td>
                 </tr>
