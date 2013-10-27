@@ -1,6 +1,9 @@
 package com.alexecollins.releasemanager.web.audit;
 
+import com.alexecollins.releasemanager.model.AuditLog;
+import com.alexecollins.releasemanager.model.AuditLogRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
@@ -8,11 +11,19 @@ import org.springframework.security.core.context.SecurityContextHolder;
  */
 @Slf4j
 public class AuditService {
-	public void audit(String screenName) {
+	@Autowired
+	AuditLogRepository repo;
+
+	public void audit(String message) {
 
 		String userName = getCurrentUser();
 
-		log.info("Audit: {} - {}", userName, screenName);
+		AuditService.log.info("Audit: {} - {}", userName, message);
+
+		final AuditLog log = new AuditLog();
+		log.setUsername(userName);
+		log.setMessage(message);
+		repo.save(log);
 
 	}
 

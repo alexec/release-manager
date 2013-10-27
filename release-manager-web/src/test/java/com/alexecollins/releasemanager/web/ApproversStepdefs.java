@@ -50,4 +50,12 @@ public class ApproversStepdefs {
             }
         });
     }
+
+	@Given("^I create a new approver$")
+	public void I_create_a_new_approver() throws Throwable {
+		the_create_approver_page();
+		I_input_a_approver();
+		fluent.input(name("submit")).click();
+		I_see_my_new_approver();
+	}
 }

@@ -13,8 +13,12 @@ public class AuditAdvice {
 	@Autowired
 	private AuditService auditService;
 
-	@After("@annotation(auditAnnotation)")
+	@After("@annotation(auditAnnotation) ")
 	public void audit(Audit auditAnnotation) {
-		auditService.audit(auditAnnotation.value());
+		String value = auditAnnotation.value();
+
+		//joinPoint.getSignature();
+
+		auditService.audit(value);
 	}
 }

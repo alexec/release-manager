@@ -13,6 +13,7 @@
     <sec:authorize access="hasRole('ROLE_ADMIN')">
     <li><a href="<c:url value="/components.html"/>">Components</a></li>
       <li><a href="<c:url value="/approvers.html"/>">Approvers</a></li>
+      <li><a href="<c:url value="/audit_logs.html"/>">Audit Logs</a></li>
   </sec:authorize>
     <li><a href="<c:url value="/watches.html"/>">Watches</a></li>
           </ul>
