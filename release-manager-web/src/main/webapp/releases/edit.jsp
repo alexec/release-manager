@@ -61,10 +61,9 @@
                 <c:forEach var="component" items="${included_components}">
                     <li>
                             ${component.component.name}:${component.version}
-                        <form method="post" role="form" class="form-inline"
+                        <form method="post" role="form" class="form-inline remove-component"
                               action="${pageContext.request.contextPath}/releases/${release.id}/components/${component.component.id}.html">
-                            <button type="submit" class="btn btn-default btn-sm" name="action" value="REMOVE">Remove
-                            </button>
+                            <input type="submit" class="btn btn-default btn-sm" name="submit" value="Remove"/>
                         </form>
                     </li>
                 </c:forEach>
@@ -73,8 +72,8 @@
         <p>${fn:length(included_components)} component(s)</p>
         -->
             <c:if test="${fn:length(excluded_components) > 0}">
-                <form method="post" role="form" class="form-inline"
-                      action="${pageContext.request.contextPath}/releases/${release.id}/components.html">
+                <form method="post" role="form" class="form-inline" id="add-component"
+                      action="${pageContext.request.contextPath}/releases/${release.id}/components.html" id="add-component">
                     <div class="form-group">
                         <label class="sr-only" for="component_id">Component</label>
                         <select name="component_id" id="component_id" class="form-control">
@@ -88,7 +87,7 @@
                         <input type="text" class="form-control" name="version" id="version" placeholder="Enter version"
                                focus="true">
                     </div>
-                    <button type="submit" class="btn btn-default">Add</button>
+                    <input type="submit" class="btn btn-default" name="submit" value="Add"/>
                 </form>
             </c:if>
         </div>
@@ -102,24 +101,22 @@
                     <li>${i.key} ${i.value.status}
 
                         <c:if test="${i.value.status == 'REQUESTED'}">
-                            <form method="post" role="form" class="form-inline"
+                            <form method="post" role="form" class="form-inline update-sign-off"
                                   action="${pageContext.request.contextPath}/releases/${release.id}/sign-offs/${i.key}.html">
-                                <button type="submit" class="btn btn-primary btn-sm" name="status"
-                                        value="AUTHORISED">Authorize
-                                </button>
-                                <button type="submit" class="btn btn-danger btn-sm" name="status" value="REJECTED">
-                                    Reject
-                                </button>
-                                <button type="submit" class="btn btn-default btn-sm" name="action" value="REMOVE">
-                                    Remove
-                                </button>
+                                <input type="submit" class="btn btn-primary btn-sm" name="status"
+                                        value="AUTHORISED"/>
+                                <input type="submit" class="btn btn-danger btn-sm" name="status" value="REJECTED"/>
+                            </form>
+                            <form method="post" role="form" class="form-inline remove-sign-off"
+                                  action="${pageContext.request.contextPath}/releases/${release.id}/sign-offs/${i.key}/delete.html">
+                                <input type="submit" class="btn btn-default btn-sm" name="submit" value="Remove"/>
                             </form>
                         </c:if>
                     </li>
                 </c:forEach>
             </ul>
             <c:if test="${fn:length(excluded_users) > 0}">
-                <form method="post" role="form" class="form-inline"
+                <form method="post" role="form" class="form-inline" id="add-sign-off"
                       action="${pageContext.request.contextPath}/releases/${release.id}/sign-offs.html">
                     <div class="form-group">
                         <label class="sr-only" for="user">Component</label>
@@ -129,7 +126,7 @@
                             </c:forEach>
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-default">Add</button>
+                    <input name="submit" type="submit" class="btn btn-default" value="Add"/>
                 </form>
             </c:if>
         </div>

@@ -45,7 +45,7 @@
                     </td>
                     <td>
                         <a href="${pageContext.request.contextPath}/releases/${release.id}.html?edit=true">Edit</a>
-                        <form method="POST" action="${pageContext.request.contextPath}/releases/${release.id}.html"
+                        <form method="POST" action="${pageContext.request.contextPath}/releases/${release.id}/delete.html"
                             role="form" class="form-inline" style="display:inline">
                             <input type="submit" class="btn btn-default btn-sm" name="submit" value="Remove"/>
                         </form>

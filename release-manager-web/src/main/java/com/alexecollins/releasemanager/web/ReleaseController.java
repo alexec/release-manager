@@ -9,7 +9,6 @@ import org.pegdown.PegDownProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -95,27 +94,9 @@ public class ReleaseController {
 		return new SimpleDateFormat("dd MMM yyyy hh:ss z");
 	}
 
-	@RequestMapping(value = "/releases/{id}", method = RequestMethod.POST)
-	public String edit(String submit, @PathVariable("id") String id, String name, String when, String duration, String desc, String status) {
-
-		if ("Update".equals(submit)) {
-			createRelease(id, name, when, duration, desc, status);
-				return redirectToRelease(id, false);
-        } else if ("Remove".equals(submit)) {
-			deleteRelease(id);
-			return "redirect:/releases.html";
-        } else {
-				throw new IllegalArgumentException("unknown submit " + submit);
-		}
-	}
-
-	@Audit("deleted release {0}")
-	private void deleteRelease(String id) {
-		releaseRepository.delete(id);
-	}
-
 	@Audit("updated release {0} {1},{2},{3},{5}")
-	private void createRelease(String id, String name, String when, String duration, String desc, String status) {
+	@RequestMapping(value = "/releases/{id}", method = RequestMethod.POST)
+	public String edit(@PathVariable("id") String id, String name, String when, String duration, String desc, String status) {
 		final Release release = releaseRepository.findOne(id);
 		release.setName(name);
 		release.setDesc(desc);
@@ -133,8 +114,18 @@ public class ReleaseController {
 		release.setStatus(newStatus);
 
 		releaseRepository.save(release);
+		return redirectToRelease(id, false);
 	}
 
+	@Audit("deleted release {0}")
+	@RequestMapping(value = "/releases/{id}/delete", method = RequestMethod.POST)
+	public String deleteRelease(@PathVariable("id") String id) {
+		releaseRepository.delete(id);
+		return "redirect:/releases.html";
+	}
+
+
+	@Audit("added component {1}:{2} to {0}")
 	@RequestMapping(value = "/releases/{id}/components", method = RequestMethod.POST)
 	public String addComponent(@PathVariable("id") String id, @RequestParam("component_id") String componentId, String version) {
 
@@ -147,17 +138,9 @@ public class ReleaseController {
 		return redirectToRelease(id, true);
 	}
 
-	@RequestMapping(value = "/releases/{id}/components/{component_id}", method = RequestMethod.POST)
-	@Transactional
-	public String updateComponent(@PathVariable("id") String id, @PathVariable("component_id") String componentId, String version) {
-
-		removeComponentFromRelease(id, componentId);
-
-		return redirectToRelease(id, true);
-	}
-
 	@Audit("removed component {1} from release {0}")
-	private void removeComponentFromRelease(String id, String componentId) {
+	@RequestMapping(value = "/releases/{id}/components/{component_id}", method = RequestMethod.POST)
+	public String removeComponentFromRelease(@PathVariable("id") String id, @PathVariable("component_id") String componentId) {
 		final Release release = releaseRepository.findOne(id);
 
 		final Iterator<ReleaseComponent> it = release.getComponents().iterator();
@@ -169,6 +152,7 @@ public class ReleaseController {
 		}
 
 		releaseRepository.save(release);
+		return redirectToRelease(id, true);
 	}
 
 	private String redirectToRelease(String id, boolean edit) {
@@ -179,9 +163,8 @@ public class ReleaseController {
 		return "/releases/" + id + ".html";
 	}
 
-	@Audit("added sign-off {2} to release {0}")
+	@Audit("added sign-off {1} to release {0}")
 	@RequestMapping(value = "/releases/{id}/sign-offs", method = RequestMethod.POST)
-	@Transactional
 	public String addSignOff(@PathVariable("id") String id, @RequestParam("user") String user) {
 
 		final Release release = releaseRepository.findOne(id);
@@ -193,35 +176,22 @@ public class ReleaseController {
 		return redirectToRelease(id, true);
 	}
 
-
+	@Audit("updated sign-off status of {0} on release {2} to {1}")
 	@RequestMapping(value = "/releases/{id}/sign-offs/{user}", method = RequestMethod.POST)
-	@Transactional
-	public String updateSignOff(@PathVariable("id") String id, @PathVariable("user") String user,
-	                            @RequestParam(value = "status", required = false) String status,
-	                            @RequestParam(value = "action", required = false) String action) {
-
-		if ("REMOVE".equals(action)) {
-			removeSignOff(user, id);
-		} else {
-			updateSignOffStatus(user, status, id);
-		}
-
+	public  String updateSignOffStatus(@PathVariable("user") String user, String status, @PathVariable("id") String id) {
+		final Release release = releaseRepository.findOne(id);
+		release.getSignOffs().get(user).setStatus(SignOffStatus.valueOf(status));
+		releaseRepository.save(release);
 		return redirectToRelease(id, true);
 	}
 
-	@Audit("updated sign-off status of {0} on release {2} to {1}")
-	private void updateSignOffStatus(String user, String status, String releaseId) {
-		final Release release = releaseRepository.findOne(releaseId);
-		release.getSignOffs().get(user).setStatus(SignOffStatus.valueOf(status));
-		releaseRepository.save(release);
-
-	}
-
 	@Audit("removed sign-off for {0} from {1}")
-	private void removeSignOff(String user, String releaseId) {
-		final Release release = releaseRepository.findOne(releaseId);
+	@RequestMapping(value = "/releases/{id}/sign-offs/{user}/delete", method = RequestMethod.POST)
+	public String removeSignOff(@PathVariable("user") String user, @PathVariable("id") String id) {
+		final Release release = releaseRepository.findOne(id);
 		release.getSignOffs().remove(user);
 		releaseRepository.save(release);
+		return redirectToRelease(id, true);
 	}
 
 	@RequestMapping("/releases/create")
@@ -229,9 +199,8 @@ public class ReleaseController {
 		return "releases/create";
 	}
 
-	@Audit("created released {0} {2},{3}")
+	@Audit("created release {0} {2},{3}")
 	@RequestMapping(value = "/releases", method = RequestMethod.POST)
-	@Transactional
 	public String create(String name, String desc, String when, String duration) {
 
 		final Release release = new Release();

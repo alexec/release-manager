@@ -21,32 +21,25 @@ public class WatchController {
 	@Autowired
 	WatchRepository watchRepository;
 
-	@RequestMapping(value="/watches", method = RequestMethod.POST)
-	public String watches(Principal user, String subject, String submit) {
-		if ("Watch".equals(submit)) {
-			final Watch existingWatch = watchRepository.findByUserAndSubject(user.getName(), subject);
-			if (existingWatch == null) {
-				createWatch(user, subject);
-			}
-        } else if ("Unwatch".equals(submit)) {
-			deleteWatch(user, subject);
-		} else{
-            throw new IllegalArgumentException("unknown submit " + submit);
-		}
-		return "redirect:" + (subject.startsWith("page:") ? subject.substring(5) : "watches.html");
-	}
-
 	@Audit("created watch {1}")
-	private void createWatch(Principal user, String subject) {
+	@RequestMapping(value="/watches", method = RequestMethod.POST)
+	public  String createWatch(Principal user, String subject) {
 		final Watch watch = new Watch();
 		watch.setUser(user.getName());
 		watch.setSubject(subject);
 		watchRepository.save(watch);
+		return getRedirect(subject);
 	}
 
 	@Audit("deleted watch {1}")
-	private void deleteWatch(Principal user, String subject) {
+	@RequestMapping(value="/watches/delete", method = RequestMethod.POST)
+	public String deleteWatch(Principal user, String subject) {
 		watchRepository.delete(watchRepository.findByUserAndSubject(user.getName(), subject));
+		return getRedirect(subject);
+	}
+
+	private String getRedirect(String subject) {
+		return "redirect:" + (subject.startsWith("page:") ? subject.substring(5) : "watches.html");
 	}
 
 	@RequestMapping(value="/watches", method = RequestMethod.GET)

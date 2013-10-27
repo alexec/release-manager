@@ -10,12 +10,12 @@ import org.openqa.selenium.WebElement;
 import org.seleniumhq.selenium.fluent.FluentExecutionStopped;
 import org.seleniumhq.selenium.fluent.FluentMatcher;
 import org.seleniumhq.selenium.fluent.FluentWebDriver;
+import org.seleniumhq.selenium.fluent.FluentWebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
 import static org.junit.Assert.fail;
-import static org.openqa.selenium.By.linkText;
-import static org.openqa.selenium.By.name;
+import static org.openqa.selenium.By.*;
 
 /**
  * @author alexec (alex.e.c@gmail.com)
@@ -96,11 +96,7 @@ public class ReleasesStepDefs {
 		fluent.trs().first(new FluentMatcher() {
 			@Override
 			public boolean matches(WebElement webElement) {
-				try {
-					return webElement.findElement(linkText(releases.name)).isDisplayed();
-				} catch (Exception ignored) {
-					return false;
-				}
+				return webElement.getText().contains(releases.name);
 			}
 		}).input().click();
 	}
@@ -118,4 +114,46 @@ public class ReleasesStepDefs {
 		} catch (FluentExecutionStopped ignored) {
 		}
 	}
+
+	@And("^I delete that release$")
+	public void I_delete_that_release() throws Throwable {
+		I_open_the_releases_page();
+		I_click_my_release_s_remove_button();
+	}
+
+	@And("^I go to edit my new release$")
+	public void I_go_to_edit_my_new_release() throws Throwable {
+		I_open_the_releases_page();
+		fluent.link(linkText(releases.name)).click();
+		fluent.link(linkText("Edit")).click();
+	}
+
+	@And("^I add a component to the release$")
+	public void I_add_a_component_to_the_release() throws Throwable {
+		final FluentWebElement form = fluent.form(id("add-component"));
+		form.input(name("version")).sendKeys("1.0.0");
+		form.input(name("submit")).click();
+	}
+
+	@And("^I remove a component from the release$")
+	public void I_remove_a_component_from_the_release() throws Throwable {
+		final FluentWebElement form = fluent.form(cssSelector(".remove-component"));
+		form.input(name("submit")).click();
+	}
+
+	@And("^I add a sign-off to the release$")
+	public void I_add_a_sign_off_to_the_release() throws Throwable {
+		fluent.form(id("add-sign-off")).input(name("submit")).click();
+	}
+
+	@And("^I remove a sign-off to the release$")
+	public void I_remove_a_sign_off_to_the_release() throws Throwable {
+		fluent.form(cssSelector(".remove-sign-off")).input(name("submit")).click();
+	}
+
+	@And("^I update a sign-off to the release to \"([^\"]*)\"$")
+	public void I_update_a_sign_off_to_the_release_to(String status) throws Throwable {
+		fluent.input(cssSelector("*[value~=" + status + "]")).click();
+	}
+
 }
