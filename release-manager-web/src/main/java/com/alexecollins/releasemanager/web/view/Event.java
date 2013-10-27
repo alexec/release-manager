@@ -1,4 +1,4 @@
-package com.alexecollins.releasemanager.web;
+package com.alexecollins.releasemanager.web.view;
 
 import lombok.Data;
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -7,7 +7,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
  * @author alexec (alex.e.c@gmail.com)
  */
 @Data
-class Event implements Comparable<Event> {
+public class Event implements Comparable<Event> {
 	private final String id;
 	private final String title;
 	private final String url;

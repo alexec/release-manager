@@ -1,6 +1,7 @@
 package com.alexecollins.releasemanager.web;
 
 import com.alexecollins.releasemanager.model.*;
+import com.alexecollins.releasemanager.web.util.TimeSpan;
 import com.mdimension.jchronic.Chronic;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

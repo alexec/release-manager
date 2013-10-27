@@ -2,6 +2,8 @@ package com.alexecollins.releasemanager.web;
 
 import com.alexecollins.releasemanager.model.Release;
 import com.alexecollins.releasemanager.model.ReleaseRepository;
+import com.alexecollins.releasemanager.web.view.CalendarResponse;
+import com.alexecollins.releasemanager.web.view.Event;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;

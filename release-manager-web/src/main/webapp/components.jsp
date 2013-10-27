@@ -19,7 +19,7 @@
                     <td>
                         <form method="POST" action="${pageContext.request.contextPath}/components/${component.id}.html"
                             role="form" class="form-inline">
-                            <input class="btn btn-default btn-sm" value="Romove"/>
+                            <input class="btn btn-default btn-sm" type="submit" name="submit" value="Remove"/>
                         </form>
                     </td>
                 </tr>

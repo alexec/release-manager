@@ -1,8 +1,12 @@
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns="http://www.springframework.org/schema/beans"
-       xmlns:mongo="http://www.springframework.org/schema/data/mongo"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
-    http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-1.1.xsd">
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+         ">
+
+    <aop:aspectj-autoproxy/>
 
     <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
         <property name="host" value="localhost" />
@@ -19,5 +23,7 @@
     </bean>
 
     <bean class="com.alexecollins.releasemanager.web.WatchService"/>
+    <bean class="com.alexecollins.releasemanager.web.audit.AuditService"/>
+    <bean class="com.alexecollins.releasemanager.web.audit.AuditAdvice"/>
 
 </beans>

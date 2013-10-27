@@ -1,4 +1,4 @@
-package com.alexecollins.releasemanager.web;
+package com.alexecollins.releasemanager.web.util;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
