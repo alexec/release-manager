@@ -11,7 +11,7 @@
     <div class="container">
         <h1>Audit Logs</h1>
         <table class="table">
-            <thead><tr><th>Created</th><th>Username</th><th>Messages</th></tr></thead>
+            <thead><tr><th>Created</th><th>Username</th><th>Message</th></tr></thead>
             <tbody>
                 <c:forEach var="audit_log" items="${audit_logs}">
                 <tr>

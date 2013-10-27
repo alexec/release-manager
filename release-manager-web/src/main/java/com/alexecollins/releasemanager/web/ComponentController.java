@@ -3,6 +3,7 @@ package com.alexecollins.releasemanager.web;
 import com.alexecollins.releasemanager.model.ArtifactRepositoryRepository;
 import com.alexecollins.releasemanager.model.Component;
 import com.alexecollins.releasemanager.model.ComponentRepository;
+import com.alexecollins.releasemanager.web.audit.Audit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
@@ -37,6 +38,7 @@ public class ComponentController {
         return "components/create";
 	}
 
+	@Audit("create component {0}")
 	@RequestMapping(value = "/components", method = RequestMethod.POST)
 	@Transactional
 	public String newComponent(@RequestParam("name") String name) {
@@ -46,6 +48,7 @@ public class ComponentController {
 		return "redirect:/components.html";
 	}
 
+	@Audit("deleted component {0}")
 	@RequestMapping(value = "/components/{id}", method = RequestMethod.POST)
 	@Transactional
 	public String deleteComponent(@PathVariable("id") String id) {

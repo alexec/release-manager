@@ -36,6 +36,6 @@ public class AuditingStepdefs {
 		final FluentWebElement trs = fluent.trs().get(1);
 
 		trs.tds().get(1).getText().shouldBe(username);
-		trs.tds().get(2).getText().shouldBe(message);
+		trs.tds().get(2).getText().shouldMatch(message);
 	}
 }

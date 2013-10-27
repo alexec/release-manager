@@ -2,6 +2,7 @@ package com.alexecollins.releasemanager.web;
 
 import com.alexecollins.releasemanager.model.Watch;
 import com.alexecollins.releasemanager.model.WatchRepository;
+import com.alexecollins.releasemanager.web.audit.Audit;
 import com.alexecollins.releasemanager.web.view.WatchView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,18 +23,30 @@ public class WatchController {
 
 	@RequestMapping(value="/watches", method = RequestMethod.POST)
 	public String watches(Principal user, String subject, String submit) {
-		final Watch existingWatch = watchRepository.findByUserAndSubject(user.getName(), subject);
 		if ("Watch".equals(submit)) {
-				final Watch watch = existingWatch != null ? existingWatch : new Watch();
-				watch.setUser(user.getName());
-				watch.setSubject(subject);
-				watchRepository.save(watch);
+			final Watch existingWatch = watchRepository.findByUserAndSubject(user.getName(), subject);
+			if (existingWatch == null) {
+				createWatch(user, subject);
+			}
         } else if ("Unwatch".equals(submit)) {
-				watchRepository.delete(existingWatch);
-        } else{
+			deleteWatch(user, subject);
+		} else{
             throw new IllegalArgumentException("unknown submit " + submit);
 		}
 		return "redirect:" + (subject.startsWith("page:") ? subject.substring(5) : "watches.html");
+	}
+
+	@Audit("created watch {1}")
+	private void createWatch(Principal user, String subject) {
+		final Watch watch = new Watch();
+		watch.setUser(user.getName());
+		watch.setSubject(subject);
+		watchRepository.save(watch);
+	}
+
+	@Audit("deleted watch {1}")
+	private void deleteWatch(Principal user, String subject) {
+		watchRepository.delete(watchRepository.findByUserAndSubject(user.getName(), subject));
 	}
 
 	@RequestMapping(value="/watches", method = RequestMethod.GET)

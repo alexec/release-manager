@@ -7,6 +7,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.seleniumhq.selenium.fluent.FluentMatcher;
 import org.seleniumhq.selenium.fluent.FluentWebDriver;
+import org.seleniumhq.selenium.fluent.FluentWebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
@@ -31,11 +32,15 @@ public class ApproversStepdefs {
     }
     @Given("^the create approver page$")
     public void the_create_approver_page() throws Throwable {
-        driver.get("http://localhost:8080/release-manager-web/approvers.html");
-        fluent.link(partialLinkText("Create")).click();
+	    the_approvals_page();
+	    fluent.link(partialLinkText("Create")).click();
     }
 
-    @And("^I input a approver$")
+	private void the_approvals_page() {
+		driver.get("http://localhost:8080/release-manager-web/approvers.html");
+	}
+
+	@And("^I input a approver$")
     public void I_input_a_approver() throws Throwable {
         name = "Approver " + System.currentTimeMillis();
         fluent.input(name("name")).sendKeys(name);
@@ -57,5 +62,17 @@ public class ApproversStepdefs {
 		I_input_a_approver();
 		fluent.input(name("submit")).click();
 		I_see_my_new_approver();
+	}
+
+	@And("^I delete that approver$")
+	public void I_delete_that_approver() throws Throwable {
+		the_approvals_page();
+		final FluentWebElement tr = fluent.trs().first(new FluentMatcher() {
+			@Override
+			public boolean matches(WebElement webElement) {
+				return webElement.getText().contains(name);
+			}
+		});
+		tr.input(name("submit")).click();
 	}
 }
