@@ -17,7 +17,8 @@
                 </c:if>
                 <div class="form-group">
                 <label for="j_username">Username</label>
-                <input id="j_username" name="j_username" type="text" class="form-control" value="<%= session.getAttribute(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_LAST_USERNAME_KEY) %> "/>
+                <input id="j_username" name="j_username" type="text" class="form-control" autofocus="autofocus"/>
+                 <!--value="<%= session.getAttribute(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_LAST_USERNAME_KEY) %> "/>-->
             </div>
             <div class="form-group">
                 <label for="j_password">Password</label>
