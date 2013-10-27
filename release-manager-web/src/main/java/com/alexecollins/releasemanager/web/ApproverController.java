@@ -33,7 +33,7 @@ public class ApproverController {
         return "approvers/create";
     }
 
-	@Audit("created approver")
+	@Audit("created approver with name \"{0}\"")
     @RequestMapping(value = "/approvers", method = RequestMethod.POST)
     @Transactional
     public String newApprover(@RequestParam("name") String name) {
@@ -43,7 +43,7 @@ public class ApproverController {
         return "redirect:/approvers.html";
     }
 
-	@Audit("deleted approver")
+	@Audit("deleted approver with ID \"{0}\"")
     @RequestMapping(value = "/approvers/{id}", method = RequestMethod.POST)
     @Transactional
     public String deleteApprover(@PathVariable("id") String id) {
