@@ -11,7 +11,7 @@
     <div class="container">
         <h1>Components</h1>
         <table class="table">
-            <thead><tr><td>Name</td></tr></thead>
+            <thead><tr><th>Name</th></tr></thead>
             <tbody>
                 <c:forEach var="component" items="${components}">
                 <tr>
