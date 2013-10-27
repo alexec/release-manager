@@ -8,3 +8,10 @@ A nascent application spiking a release management app. The goal is orientated a
 * Audit trail of changes.
 * Tracking components released.
 * Planning.
+
+Work in Progress
+---
+* Watches. How to determine the correct email contents.
+* Auditing.
+    * How to include detail of audited entity in message.
+    * Complete advice.
