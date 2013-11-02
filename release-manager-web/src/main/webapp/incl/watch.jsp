@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!--
 <c:choose>
     <c:when test="${not watching}">
         <form role="form" class="form-inline" method="post" action="${pageContext.request.contextPath}/watches.html"
@@ -15,3 +16,4 @@
         </form>
     </c:otherwise>
 </c:choose>
+-->

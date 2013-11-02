@@ -15,7 +15,9 @@
       <li><a href="<c:url value="/approvers.html"/>">Approvers</a></li>
       <li><a href="<c:url value="/audit_logs.html"/>">Audit Logs</a></li>
   </sec:authorize>
+  <!--
     <li><a href="<c:url value="/watches.html"/>">Watches</a></li>
+    -->
           </ul>
           <ul class="nav navbar-nav navbar-right">
         <li><a href="<c:url value="/auth/logout.html"/>">Logout ${pageContext.request.userPrincipal.principal.username}</a></li>
