@@ -1,0 +1,12 @@
+image: bradrydzewski/java:openjdk6
+env:
+script:
+  - mvn verify -Prun-its
+services:
+  - mongodb
+cache:
+  - .m2
+notify:
+  email:
+    recipients:
+      - alex.e.c@gmail.com
