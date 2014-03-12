@@ -1,4 +1,5 @@
 [![Build Status](https://api.travis-ci.org/alexec/release-manager.png)](https://travis-ci.org/alexec/release-manager)
+[![Build Status](https://drone.io/github.com/alexec/release-manager/status.png)](https://drone.io/github.com/alexec/release-manager/latest)
 Release Manager
 ===============
 
